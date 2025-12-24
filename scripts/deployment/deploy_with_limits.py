@@ -113,12 +113,16 @@ def load_model_8bit(model_path: str):
     print("模型加载完成！")
     print("=" * 60)
 
-def generate_text(prompt: str, max_tokens: int, temperature: float):
-    """生成文本（带并发控制）"""
+def generate_text(prompt: str, max_tokens: int, temperature: float, request_id: str = None):
+    """生成文本（带并发控制和metrics追踪）"""
     with request_semaphore:
         inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+        input_len = inputs['input_ids'].shape[1]
         
         with torch.no_grad():
+            # 记录生成开始时间（近似TTFT）
+            gen_start = time.time()
+            
             outputs = model.generate(
                 **inputs,
                 max_new_tokens=max_tokens,
@@ -126,9 +130,22 @@ def generate_text(prompt: str, max_tokens: int, temperature: float):
                 do_sample=temperature > 0,
                 pad_token_id=tokenizer.eos_token_id,
             )
+            
+            gen_end = time.time()
+        
+        # 计算输出tokens
+        output_len = outputs[0].shape[0] - input_len
+        
+        # 标记first token时间（使用生成开始时间作为近似值）
+        # 实际TTFT = prefill时间，这里用总时间/输出tokens来估算
+        if request_id and output_len > 0:
+            # 估算TTFT: 假设prefill占总时间的10-20%
+            total_time = gen_end - gen_start
+            estimated_ttft = total_time * 0.15  # 估算prefill时间
+            metrics_collector.active_requests[request_id].first_token_time = gen_start + estimated_ttft
         
         generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
-        return generated_text
+        return generated_text, output_len
 
 @app.route('/v1/completions', methods=['POST'])
 def completions():
@@ -154,11 +171,8 @@ def completions():
         input_tokens = len(tokenizer.encode(prompt))
         req_metrics = metrics_collector.start_request(request_id, input_tokens)
         
-        # 生成
-        generated_text = generate_text(prompt, max_tokens, temperature)
-        
-        # 计算输出tokens
-        output_tokens = len(tokenizer.encode(generated_text)) - input_tokens
+        # 生成（带metrics追踪）
+        generated_text, output_tokens = generate_text(prompt, max_tokens, temperature, request_id)
         
         # 结束metrics收集
         metrics_collector.end_request(request_id, output_tokens)
@@ -220,12 +234,11 @@ def chat_completions():
         input_tokens = len(tokenizer.encode(text))
         req_metrics = metrics_collector.start_request(request_id, input_tokens)
         
-        # 生成（第一个token时标记）
-        generated_text = generate_text(text, max_tokens, temperature)
+        # 生成（带metrics追踪）
+        generated_text, output_tokens = generate_text(text, max_tokens, temperature, request_id)
         
         # 提取生成的内容
         response_text = generated_text[len(text):]
-        output_tokens = len(tokenizer.encode(response_text))
         
         # 结束metrics收集
         metrics_collector.end_request(request_id, output_tokens)
@@ -292,7 +305,7 @@ def health():
         "limits": {
             "max_concurrent_requests": MAX_CONCURRENT_REQUESTS,
             "max_queue_size": request_queue.maxsize,
-            "rate_limit": "10 requests/minute per IP"
+            "rate_limit": "无限制"
         }
     })
 
