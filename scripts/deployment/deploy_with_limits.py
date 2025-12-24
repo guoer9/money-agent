@@ -327,26 +327,32 @@ def get_metrics():
 @app.route('/api/v1/metrics', methods=['GET', 'POST'])
 def api_metrics():
     """
-    外部调用的Metrics API
+    外部调用的Metrics API - 增强版可观测性
     
     请求方式: GET 或 POST
     返回格式: JSON
     
     示例:
         curl http://localhost:8000/api/v1/metrics
-        curl -X POST http://localhost:8000/api/v1/metrics -H "Content-Type: application/json"
     """
     import datetime
     
-    current = metrics_collector.get_current_metrics()
-    slo = metrics_collector.get_slo_metrics()
+    # 获取扩展metrics
+    extended = metrics_collector.get_extended_metrics()
+    current = extended['current']
+    slo = extended['slo']
+    latency = extended['latency']
+    histogram = extended['latency_histogram']
+    errors = extended['errors']
     
     # 获取GPU状态
     gpu_allocated = 0.0
     gpu_total = 0.0
+    gpu_name = "Unknown"
     if torch.cuda.is_available():
         gpu_allocated = torch.cuda.memory_allocated(0) / 1024**3
         gpu_total = torch.cuda.get_device_properties(0).total_memory / 1024**3
+        gpu_name = torch.cuda.get_device_name(0)
     
     # 计算告警
     alerts = []
@@ -358,7 +364,7 @@ def api_metrics():
             "value": current['num_waiting_requests'],
             "threshold": 5
         })
-    if slo['ttft_p95'] > 3.0:
+    if slo.get('ttft_p95', 0) > 3.0:
         alerts.append({
             "level": "warning", 
             "message": f"TTFT P95 过高: {slo['ttft_p95']:.2f}s",
@@ -366,43 +372,92 @@ def api_metrics():
             "value": slo['ttft_p95'],
             "threshold": 3.0
         })
+    if current.get('error_rate_percent', 0) > 10:
+        alerts.append({
+            "level": "critical",
+            "message": f"错误率过高: {current['error_rate_percent']:.1f}%",
+            "metric": "error_rate_percent",
+            "value": current['error_rate_percent'],
+            "threshold": 10
+        })
     
     response = {
         "timestamp": datetime.datetime.now().isoformat(),
         "service": "qwen-vllm",
-        "status": "healthy" if not alerts else "degraded",
+        "version": "1.0.0",
+        "status": "healthy" if not alerts else ("critical" if any(a['level'] == 'critical' for a in alerts) else "degraded"),
         
-        # 请求状态
+        # 服务运行状态
+        "uptime": {
+            "seconds": current.get('uptime_seconds', 0),
+            "human": f"{int(current.get('uptime_seconds', 0) // 3600)}h {int((current.get('uptime_seconds', 0) % 3600) // 60)}m"
+        },
+        
+        # 请求统计
         "requests": {
             "waiting": current['num_waiting_requests'],
             "running": current['num_running_requests'],
+            "peak_concurrent": current.get('peak_concurrent_requests', 0),
             "total": current['total_requests'],
-            "tokens_generated": current['total_tokens_generated']
+            "successful": current.get('successful_requests', 0),
+            "failed": current.get('failed_requests', 0),
+            "success_rate_percent": current.get('success_rate_percent', 100),
+            "error_rate_percent": current.get('error_rate_percent', 0),
+            "requests_per_second": current.get('requests_per_second', 0)
+        },
+        
+        # Token统计
+        "tokens": {
+            "total_input": current.get('total_input_tokens', 0),
+            "total_output": current['total_tokens_generated'],
+            "avg_per_request": current.get('avg_tokens_per_request', 0)
         },
         
         # SLO指标
         "slo": {
             "ttft": {
-                "mean": round(slo['ttft_mean'], 4),
-                "p50": round(slo['ttft_p50'], 4),
-                "p95": round(slo['ttft_p95'], 4),
-                "p99": round(slo['ttft_p99'], 4),
+                "mean": round(slo.get('ttft_mean', 0), 4),
+                "p50": round(slo.get('ttft_p50', 0), 4),
+                "p95": round(slo.get('ttft_p95', 0), 4),
+                "p99": round(slo.get('ttft_p99', 0), 4),
                 "unit": "seconds"
             },
             "throughput": {
-                "decoding_mean": round(slo['decoding_throughput_mean'], 2),
-                "decoding_p50": round(slo['decoding_throughput_p50'], 2),
-                "total": round(slo['total_throughput'], 2),
+                "decoding_mean": round(slo.get('decoding_throughput_mean', 0), 2),
+                "decoding_p50": round(slo.get('decoding_throughput_p50', 0), 2),
+                "total": round(slo.get('total_throughput', 0), 2),
                 "unit": "tokens/sec"
             },
             "sample_size": slo.get('sample_size', 0)
         },
         
+        # 请求延迟
+        "latency": {
+            "mean": latency.get('latency_mean', 0),
+            "p50": latency.get('latency_p50', 0),
+            "p95": latency.get('latency_p95', 0),
+            "p99": latency.get('latency_p99', 0),
+            "min": latency.get('latency_min', 0),
+            "max": latency.get('latency_max', 0),
+            "unit": "seconds"
+        },
+        
+        # 延迟直方图
+        "latency_histogram": histogram,
+        
         # GPU状态
         "gpu": {
+            "name": gpu_name,
             "allocated_gb": round(gpu_allocated, 2),
             "total_gb": round(gpu_total, 2),
+            "free_gb": round(gpu_total - gpu_allocated, 2),
             "utilization_percent": round(gpu_allocated / gpu_total * 100, 1) if gpu_total > 0 else 0
+        },
+        
+        # 错误详情
+        "errors": {
+            "total": current.get('failed_requests', 0),
+            "by_type": errors
         },
         
         # 告警
