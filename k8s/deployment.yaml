@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: finbert-sentiment
+  labels:
+    app: finbert-sentiment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: finbert-sentiment
+  template:
+    metadata:
+      labels:
+        app: finbert-sentiment
+    spec:
+      containers:
+      - name: finbert
+        image: finbert-sentiment:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8888
+        env:
+        - name: HF_ENDPOINT
+          value: "https://hf-mirror.com"
+        - name: MODEL_NAME
+          value: "/models"
+        - name: DEVICE
+          value: "cuda"
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+            memory: "4Gi"
+            cpu: "4"
+          requests:
+            nvidia.com/gpu: 1
+            memory: "2Gi"
+            cpu: "2"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8888
+          initialDelaySeconds: 120
+          periodSeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8888
+          initialDelaySeconds: 180
+          periodSeconds: 30
+          timeoutSeconds: 5
+        volumeMounts:
+        - name: models
+          mountPath: /models
+      volumes:
+      - name: models
+        hostPath:
+          path: /path/to/models
+          type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: finbert-sentiment-svc
+  labels:
+    app: finbert-sentiment
+spec:
+  type: NodePort
+  ports:
+  - port: 8888
+    targetPort: 8888
+    nodePort: 30888
+  selector:
+    app: finbert-sentiment
