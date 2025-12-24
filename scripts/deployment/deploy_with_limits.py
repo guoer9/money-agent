@@ -324,6 +324,94 @@ def get_metrics():
     all_metrics = metrics_collector.get_all_metrics()
     return jsonify(all_metrics)
 
+@app.route('/api/v1/metrics', methods=['GET', 'POST'])
+def api_metrics():
+    """
+    外部调用的Metrics API
+    
+    请求方式: GET 或 POST
+    返回格式: JSON
+    
+    示例:
+        curl http://localhost:8000/api/v1/metrics
+        curl -X POST http://localhost:8000/api/v1/metrics -H "Content-Type: application/json"
+    """
+    import datetime
+    
+    current = metrics_collector.get_current_metrics()
+    slo = metrics_collector.get_slo_metrics()
+    
+    # 获取GPU状态
+    gpu_allocated = 0.0
+    gpu_total = 0.0
+    if torch.cuda.is_available():
+        gpu_allocated = torch.cuda.memory_allocated(0) / 1024**3
+        gpu_total = torch.cuda.get_device_properties(0).total_memory / 1024**3
+    
+    # 计算告警
+    alerts = []
+    if current['num_waiting_requests'] > 5:
+        alerts.append({
+            "level": "warning",
+            "message": f"等待队列过长: {current['num_waiting_requests']} 个请求",
+            "metric": "num_waiting_requests",
+            "value": current['num_waiting_requests'],
+            "threshold": 5
+        })
+    if slo['ttft_p95'] > 3.0:
+        alerts.append({
+            "level": "warning", 
+            "message": f"TTFT P95 过高: {slo['ttft_p95']:.2f}s",
+            "metric": "ttft_p95",
+            "value": slo['ttft_p95'],
+            "threshold": 3.0
+        })
+    
+    response = {
+        "timestamp": datetime.datetime.now().isoformat(),
+        "service": "qwen-vllm",
+        "status": "healthy" if not alerts else "degraded",
+        
+        # 请求状态
+        "requests": {
+            "waiting": current['num_waiting_requests'],
+            "running": current['num_running_requests'],
+            "total": current['total_requests'],
+            "tokens_generated": current['total_tokens_generated']
+        },
+        
+        # SLO指标
+        "slo": {
+            "ttft": {
+                "mean": round(slo['ttft_mean'], 4),
+                "p50": round(slo['ttft_p50'], 4),
+                "p95": round(slo['ttft_p95'], 4),
+                "p99": round(slo['ttft_p99'], 4),
+                "unit": "seconds"
+            },
+            "throughput": {
+                "decoding_mean": round(slo['decoding_throughput_mean'], 2),
+                "decoding_p50": round(slo['decoding_throughput_p50'], 2),
+                "total": round(slo['total_throughput'], 2),
+                "unit": "tokens/sec"
+            },
+            "sample_size": slo.get('sample_size', 0)
+        },
+        
+        # GPU状态
+        "gpu": {
+            "allocated_gb": round(gpu_allocated, 2),
+            "total_gb": round(gpu_total, 2),
+            "utilization_percent": round(gpu_allocated / gpu_total * 100, 1) if gpu_total > 0 else 0
+        },
+        
+        # 告警
+        "alerts": alerts,
+        "alerts_count": len(alerts)
+    }
+    
+    return jsonify(response)
+
 @app.route('/metrics/prometheus', methods=['GET'])
 def prometheus_metrics():
     """Prometheus格式metrics"""
