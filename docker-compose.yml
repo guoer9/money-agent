@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  finbert-api:
+    build: .
+    container_name: finbert-sentiment
+    ports:
+      - "8888:8888"
+    environment:
+      - MODEL_NAME=/models
+      - DEVICE=cpu
+    volumes:
+      - ./models:/models
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # GPU版本 (需要nvidia-docker)
+  finbert-api-gpu:
+    build: .
+    container_name: finbert-sentiment-gpu
+    ports:
+      - "8888:8888"
+    environment:
+      - MODEL_NAME=/models
+      - DEVICE=cuda
+    volumes:
+      - ./models:/models
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    profiles:
+      - gpu

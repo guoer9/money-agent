@@ -1,0 +1,17 @@
+# PyTorch (Docker中使用CPU版本，生产环境挂载GPU)
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Transformers & NLP
+transformers>=4.35.0
+safetensors>=0.4.0
+
+# API
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+python-multipart>=0.0.6
+
+# Utils
+numpy>=1.24.0
+requests>=2.31.0

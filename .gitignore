@@ -1,39 +1,64 @@
-.DS_Store
-
 # Python
 __pycache__/
 *.py[cod]
+*$py.class
 *.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
 *.egg-info/
-.pytest_cache/
-.ipynb_checkpoints/
+.installed.cfg
+*.egg
 
-# Virtual env
-.venv/
+# Virtual environments
+.env
+.venv
+env/
 venv/
 ENV/
 
-# Secrets
-.env
-.env.*
-
 # IDE
-.windsurf/
-.vscode/
 .idea/
+.vscode/
+*.swp
+*.swo
+*~
 
-# Runtime / experiment outputs
-output/
-alpha_agent/output/
-alpha_agent/mlruns/
-alpha_agent/feature_repo/data/registry.db
-alpha_agent/Volumes/
+# Jupyter
+.ipynb_checkpoints/
 
-kaggle/**/analysis_output/
-kaggle/**/data/
+# Models (large files)
+*.bin
+*.pt
+*.pth
+*.safetensors
+models/
 
 # Logs
 *.log
+logs/
 
-# Egg info
-*.egg-info/
+# Test outputs
+*_results.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+.docker/
+
+# Temp
+tmp/
+temp/
+*.tmp
