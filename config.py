@@ -9,9 +9,10 @@ PORT = 8000
 # 模型路径
 MODEL_PATH = "./models/qwen-news-classifier-merged"
 
-# 并发控制（基于RTX 3080 10GB显存优化）
-MAX_CONCURRENT_REQUESTS = 3  # 最大并发请求数
-REQUEST_QUEUE_SIZE = 10      # 请求队列大小
+# 并发控制（基于RTX 3080 10GB显存，90%容量）
+# 模型: 7.64GB, KV Cache: ~0.5GB/请求, 目标: 9GB (90%)
+MAX_CONCURRENT_REQUESTS = 4  # 最大并发请求数
+REQUEST_QUEUE_SIZE = 15      # 请求队列大小
 
 # 速率限制 (已禁用)
 # RATE_LIMIT_PER_MINUTE = 10   # 每分钟请求数
