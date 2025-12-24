@@ -35,11 +35,11 @@ from scripts.deployment.metrics import metrics_collector
 
 app = Flask(__name__)
 
-# 速率限制器配置
+# 速率限制器配置 (已禁用限制)
 limiter = Limiter(
     app=app,
     key_func=get_remote_address,
-    default_limits=[f"{RATE_LIMIT_PER_MINUTE} per minute"],
+    default_limits=[],  # 无限制
     storage_uri="memory://"
 )
 
