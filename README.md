@@ -59,6 +59,7 @@ qlib_trading/
 ├── alpha_agent/          # 🧠 因子挖掘/筛选/回测智能体 (核心)
 │   ├── config/           #    配置管理
 │   ├── core/             #    核心组件 (LLM/沙箱/评估)
+│   ├── mining/           #    GP搜索/回测
 │   ├── selection/        #    多阶段因子筛选系统 ⭐
 │   ├── evolution/        #    LLM+GP混合进化引擎
 │   ├── evaluation/       #    回测评估与指标
