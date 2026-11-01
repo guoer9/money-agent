@@ -1,0 +1,21 @@
+{
+  "name": "@sa/hooks",
+  "version": "2.3.0",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./src/*"
+      ]
+    }
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit --skipLibCheck"
+  },
+  "dependencies": {
+    "@sa/axios": "workspace:*",
+    "@sa/utils": "workspace:*"
+  }
+}

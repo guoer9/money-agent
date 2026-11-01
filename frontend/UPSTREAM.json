@@ -1,0 +1,8 @@
+{
+  "project": "SoybeanAdmin",
+  "repository": "https://github.com/soybeanjs/soybean-admin",
+  "commit": "d2dfefd757e37d8d6077ea1cea6181fb628d6097",
+  "license": "MIT",
+  "mode": "source reuse; project APIs not integrated yet",
+  "upstream_demo_data_is_not_thesis_data": true
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@sa/color",
+  "version": "2.3.0",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./src/*"
+      ]
+    }
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit --skipLibCheck"
+  },
+  "dependencies": {
+    "@sa/utils": "workspace:*",
+    "colord": "2.10.0"
+  }
+}

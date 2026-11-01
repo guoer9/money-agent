@@ -1,0 +1,25 @@
+{
+  "name": "@sa/alova",
+  "version": "2.3.0",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./src/*"
+      ]
+    }
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./fetch": "./src/fetch.ts",
+    "./client": "./src/client.ts",
+    "./mock": "./src/mock.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit --skipLibCheck"
+  },
+  "dependencies": {
+    "@alova/mock": "2.0.22",
+    "@sa/utils": "workspace:*",
+    "alova": "3.5.5"
+  }
+}

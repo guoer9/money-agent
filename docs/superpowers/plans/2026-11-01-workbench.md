@@ -4,9 +4,9 @@
 
 **Goal:** 可运行的真实数据因子研究工作台和同步论文材料。
 
-**Architecture:** React 独立展示，FastAPI 查询/任务 API，SQLite 运行索引，Parquet 数据和评价产物；真正 RDLoop 编排经检查的确定性因子计算，最终测试独立执行。
+**Architecture:** SoybeanAdmin/Vue 3 数据总控与全屏展示，FastAPI 查询/任务 API，SQLite 运行索引，Parquet 数据和评价产物；真正 RDLoop 编排经检查的确定性因子计算，最终测试独立执行。
 
-**Tech Stack:** Python 3.10、FastAPI、pandas、scipy、RD-Agent 固定源码、React、TypeScript、Vite、ECharts。
+**Tech Stack:** Python 3.10、FastAPI、pandas、scipy、RD-Agent 固定源码、Vue 3、TypeScript、Naive UI、Pinia、SoybeanAdmin 固定构建链、ECharts。
 
 **Spec:** ../specs/2026-11-01-workbench-design.md
 
@@ -66,9 +66,9 @@ Interfaces: /api/overview, /api/datasets, /api/runs, /api/runs/{id}, /api/factor
 
 ### Task 5: 中文研究工作台
 
-Files: frontend/src/App.tsx, frontend/src/styles.css, frontend/src/api.ts, frontend/src/charts.tsx.
+Files: frontend/src/views/home/index.vue, frontend/src/views/home/modules, frontend/src/service/api/research.ts, frontend/src/hooks/common/echarts.ts.
 Consumes: Task 4 API；图表只绘制后端真实数据。
-- [ ] 建立前端、6个视图和状态组件；先接真实经典归档形成可见成果。
+- [ ] 复用固定版本 SoybeanAdmin 布局/路由/主题/图表，建立大屏与6个业务视图；先接真实经典归档形成可见成果。
 - [ ] 实现自然语言输入、任务进度、因子详情、日IC/分层、父子对照和论文材料导出。
 - [ ] 类型检查和生产构建通过；浏览器检查 1440/1024 宽度及错误/空状态。
 - [ ] 校验按钮可用、指标真实、刷新恢复，保存截图并提交。
