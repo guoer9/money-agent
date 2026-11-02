@@ -1,5 +1,5 @@
 {
-  "checkpoint_tag": "alphalab-v1.2.0-data-checkpoint-20261102",
+  "checkpoint_tag": "alphalab-v1.2.0-data-checkpoint-20261102.1",
   "remote_branch": "backup/alphalab-20261102",
   "repository": "guoer9/money-agent",
   "created_at": "2026-11-02T14:36:33.237425+00:00",
@@ -50,7 +50,16 @@
       "heartbeats": 5
     },
     "production_panel_sha256_verified": true,
-    "full_market_report_verified": true
+    "full_market_report_verified": true,
+    "restored_app_smoke": {
+      "overview": 200,
+      "evidence": 200,
+      "html": 200,
+      "frontend_asset": 200,
+      "dataset_identity": "matched",
+      "final_test": "not_run",
+      "imports_from_restored_source": true
+    }
   },
   "verification": {
     "backend": "101 passed, 1 existing deprecation warning; local networking enabled for the loopback deadline test",
@@ -69,5 +78,8 @@
     "window_rows": 11393279,
     "research_ready": false,
     "final_test_evaluated": false
-  }
+  },
+  "initial_code_tag": "alphalab-v1.2.0-data-checkpoint-20261102",
+  "data_branch": "data/alphalab-20261102",
+  "distribution": "Dedicated SSH-pushed data branch, 32 MiB chunks with whole-archive and per-chunk SHA-256"
 }

@@ -1,25 +1,27 @@
 # 当前代码与数据的版本回退
 
-本次检查点保存于用户指定的 `guoer9/money-agent` 仓库。代码使用 Git 提交、独立备份分支和附注标签；大体积数据、数据库与已构建前端保存为同一 GitHub Release 的附件。恢复时以标签、附件校验和及文件清单共同确定身份，不能只切换代码而沿用另一版本的数据。
+本次检查点保存于用户指定的 `guoer9/money-agent` 仓库。代码使用 Git 提交、独立备份分支和附注标签；数据、数据库与已构建前端通过 SSH 保存到专用数据分支。归档每片不超过 32 MiB，附带分片及完整归档 SHA-256、合并脚本和逐文件清单。恢复时共同核验代码和数据身份。
 
 ## 2026-11-02 检查点
 
 | 项目 | 标识 |
 | --- | --- |
 | 当前产品版本 | AlphaLab v1.2.0 及 2026-11-02 工作区增量 |
-| 回退标签 | `alphalab-v1.2.0-data-checkpoint-20261102` |
+| 当前回退标签 | `alphalab-v1.2.0-data-checkpoint-20261102.1` |
 | GitHub 备份分支 | `backup/alphalab-20261102` |
+| GitHub 数据分支 | `data/alphalab-20261102` |
 | 原 v1.2.0 基点 | `90dbda7`，另以 `alphalab-v1.2.0` 标签保存 |
-| 发布地址 | `https://github.com/guoer9/money-agent/releases/tag/alphalab-v1.2.0-data-checkpoint-20261102` |
+| 初始代码检查点 | `alphalab-v1.2.0-data-checkpoint-20261102`，保留原标签 |
+| 数据地址 | `https://github.com/guoer9/money-agent/tree/data/alphalab-20261102` |
 | 产品数据集 | `tencent-qfq-20261101T143908-d1ef67035f`，30 只、19,190 行 |
 | 产品面板 SHA-256 | `1ce0f66b3541711961b8cc08abd94d24c434265c4eda94a1c979b99c87b82623` |
 | 全市场验证 | 当前 A 股 5,576 只、11,393,279 行窗口日线，独立保存、尚非研究就绪 |
 
 备份分支保留当前产品独立历史，远端已有 `main`、`finbert`、`vllm` 和 `v1.0.0` 保留。此次检查点不代表新的稳定功能版本或新的论文最终测试成绩。
 
-## 附件与范围
+## 归档与范围
 
-| 附件 | 保存内容 |
+| 合并后文件 | 保存内容 |
 | --- | --- |
 | `AlphaLab-checkpoint-20261102-source.tar.gz` | 该标签的完整源码、文档、前端锁文件和已纳入版本的原始基线数据 |
 | `AlphaLab-checkpoint-20261102-code.bundle` | 产品 Git 历史与标签，供离线恢复 |
@@ -34,25 +36,21 @@
 
 ## 在新目录恢复，保留当前运行实例
 
-以下步骤在一个新的空目录中操作。完整恢复需下载所有列出的附件，并先校验，再解压。
+以下步骤在一个新的空目录中操作。数据分支的脚本先验证分片和完整归档，再写到新建的 `packages` 目录；文件已存在时停止，不覆盖已有文件。
 
 ```sh
 mkdir AlphaLab-restore-20261102
 cd AlphaLab-restore-20261102
-git clone --branch alphalab-v1.2.0-data-checkpoint-20261102 \
+git clone --single-branch --branch alphalab-v1.2.0-data-checkpoint-20261102.1 \
   git@github.com:guoer9/money-agent.git rdagent_thesis
-
-release_url=https://github.com/guoer9/money-agent/releases/download/alphalab-v1.2.0-data-checkpoint-20261102
-for asset in AlphaLab-checkpoint-20261102-source.tar.gz \
-  AlphaLab-checkpoint-20261102-code.bundle \
-  AlphaLab-checkpoint-20261102-runtime.tar.gz \
-  AlphaLab-checkpoint-20261102-research.tar.gz \
-  checkpoint-manifest.json SHA256SUMS.txt; do
-  curl --fail --location --output "$asset" "$release_url/$asset"
-done
+git clone --depth 1 --single-branch --branch data/alphalab-20261102 \
+  git@github.com:guoer9/money-agent.git data-backup
+python3 data-backup/restore_archives.py packages
+cd packages
 shasum -a 256 -c SHA256SUMS.txt
-tar -xzf AlphaLab-checkpoint-20261102-runtime.tar.gz
-tar -xzf AlphaLab-checkpoint-20261102-research.tar.gz
+tar -xzf AlphaLab-checkpoint-20261102-runtime.tar.gz -C ..
+tar -xzf AlphaLab-checkpoint-20261102-research.tar.gz -C ..
+cd ..
 ```
 
 核验逐文件清单：

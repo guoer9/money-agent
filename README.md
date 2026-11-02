@@ -56,7 +56,7 @@ PORT=18000 ./scripts/start.sh
 
 ## 版本与数据回退
 
-2026-11-02 数据层改造前检查点为 `alphalab-v1.2.0-data-checkpoint-20261102`，备份分支为 `backup/alphalab-20261102`，目标仓库为 `guoer9/money-agent`。代码、SQLite 一致性备份、现有基线、5,576 只全市场采集资产和前端构建分别保存并关联校验和。恢复步骤、附件范围和后续数据版本规则见[回退说明](docs/rollback.md)。发布和恢复核验状态以 Release 附件 `checkpoint-manifest.json` 为准。
+2026-11-02 数据层改造前检查点为 `alphalab-v1.2.0-data-checkpoint-20261102.1`，代码分支为 `backup/alphalab-20261102`，数据分支为 `data/alphalab-20261102`，目标仓库为 `guoer9/money-agent`。代码、SQLite 一致性备份、现有基线、5,576 只全市场采集资产和前端构建分别保存并关联校验和。恢复步骤、归档范围和后续数据版本规则见[回退说明](docs/rollback.md)，归档身份及恢复核验见数据分支的 `checkpoint-manifest.json`。
 
 ## 许可证
 
