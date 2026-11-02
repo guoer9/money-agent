@@ -1,0 +1,561 @@
+{
+  "schema_version": 2,
+  "reviewed_on": "2026-11-02",
+  "workspace_root": "/Volumes/2tb/mydata/code/Quantitative_trading",
+  "product_root": "rdagent_thesis",
+  "constraint": {
+    "data_budget_cny": 0,
+    "paid_access_purchased": false,
+    "bulk_download_started": false,
+    "akshare_explicitly_allowed": true,
+    "stability_prioritized": true,
+    "requested_fetch_budget_seconds": 60,
+    "minute_target_scope": "Proposed: routine incremental batch for the existing 30-stock pool with prior historical cache; first bootstrap measured separately",
+    "self_hosted_upstream_limits_removed": false
+  },
+  "decision": {
+    "target_daily_source": "AKShare and minimal provider adapters, accepted per underlying source and asset; Sina raw daily sample obtained, adjustment acceptance pending",
+    "format_export": "Immutable Parquet snapshots; official Qlib dump_bin.py with readback validation for research inputs",
+    "news_supplement": "Existing AKShare news adapter; news not sampled this turn and complete historical coverage not established",
+    "current_production_source": "Tencent fqkline/qfqday; retained baseline",
+    "commercial_providers": "background comparison only; not a prerequisite",
+    "acquisition_architecture": "Independent bounded scheduler, source-group concurrency budgets, raw archives, quality gates, immutable snapshots and local-only dashboard queries",
+    "baostock_role": "Optional serial historical-source reference; login failure retained as evidence, not a mainline prerequisite",
+    "akquant_role": "Official data-format/ETL reference and possible later strategy-backtest adapter; engine not installed or tested",
+    "design": "docs/superpowers/specs/2026-11-02-stable-data-ingestion-design.md",
+    "implementation_plan": "docs/superpowers/plans/2026-11-02-stable-data-ingestion.md"
+  },
+  "current_dataset": {
+    "manifest": "runtime/data/manifest.json",
+    "id": "tencent-qfq-20261101T143908-d1ef67035f",
+    "rows": 19190,
+    "instruments": 30,
+    "start": "2024-03-11",
+    "end": "2026-10-30",
+    "price_mode": "qfq snapshot; close and adj_close equal",
+    "volume_unit": "lots of 100 shares",
+    "independent_adjustment_factors": false,
+    "historical_universe_validated": false,
+    "final_test_reserved": [
+      "2026-04-22",
+      "2026-10-30"
+    ]
+  },
+  "provider_states": [
+    {
+      "provider": "BaoStock",
+      "installed_sdk": "0.9.4",
+      "access_used": "anonymous; public endpoint; serial",
+      "status": "blocked_at_login",
+      "data_rows_downloaded": 0,
+      "evidence": "docs/evidence/2026-11-02/baostock-probe.json",
+      "observed": "TCP connects; first recv returns EOF after sending login request. Diagnostic exits empty-read loop; upstream close cause unknown.",
+      "documented_capabilities": [
+        "daily OHLCV and amount",
+        "ST and trade status",
+        "stock basic data including IPO/outDate/status",
+        "calendar",
+        "independent adjustment factors",
+        "selected quarterly financial indicators",
+        "per-date A-stock/ETF daily updates"
+      ],
+      "not_validated": [
+        "batch access and pagination",
+        "historical delisted-stock and board coverage",
+        "complete historical universe membership",
+        "adjustment consistency",
+        "strict PIT revision history",
+        "complete company-action event details and daily limit prices"
+      ],
+      "access_rules": {
+        "max_documented_api_requests_per_day": 50000,
+        "concurrent_connections_allowed": false,
+        "source_id": "S11"
+      },
+      "incremental_design": {
+        "bootstrap": "per-instrument historical range after small-sample acceptance",
+        "increment": "evaluate per-date query_daily_history_k_AStock and query_daily_adjust_factor; count actual network requests including pagination",
+        "publish": "after daily bars and adjustment factors are both available and verified; scheduled clock time alone is insufficient",
+        "scope": "Earlier BaoStock-specific proposal, preserved for reference; not the current mainline implementation plan"
+      },
+      "role": "optional_reference_not_mainline_blocker"
+    },
+    {
+      "provider": "AKShare",
+      "product_installed": false,
+      "status": "isolated_full_market_raw_daily_verified_adjustment_partial",
+      "adapter": "qlib_trading/alpha_agent/data_sources/news_fetcher.py",
+      "market_or_news_acquisition_tested": true,
+      "note": "Product dependency unchanged. Isolated environment completed current-universe raw daily acquisition; adjusted research-dataset validity, product-worker integration, concurrency and longitudinal stability remain unverified. News remains untested.",
+      "isolated_version": "1.18.88",
+      "isolated_environment": "runtime/verification/20261102-akshare/venv",
+      "market_acquisition_tested": true,
+      "news_acquisition_tested": false,
+      "evidence": "docs/evidence/2026-11-02/akshare-probe.json",
+      "sample_results": {
+        "sina_calendar": {
+          "dates": 8797,
+          "start": "1990-12-19",
+          "end": "2026-12-31",
+          "http_seconds": 0.587,
+          "note": "Includes scheduled future calendar dates, not future market observations"
+        },
+        "sina_raw_daily": {
+          "instrument": "sh600000",
+          "raw_rows": 6417,
+          "start": "1999-11-10",
+          "end": "2026-10-30",
+          "http_seconds": 0.631,
+          "offline_decode_seconds": 0.2,
+          "training_sample_rows": 57,
+          "adjustment": "unadjusted"
+        },
+        "sina_daily_helper": "Raw bars fetched; subsequent outstanding-share request failed with SSL EOF",
+        "sina_qfq_factor": "6-second HTTP read timeout",
+        "eastmoney_daily": "Initial path had subprocess/read timeout; after VPN path change, stratified raw and provider-qfq requests succeeded 60/60"
+      },
+      "recovery": {
+        "network_context": "User manually switched VPN during the run; DNS changed from 198.18 synthetic resolution and utun6 to public resolution and en0",
+        "eastmoney_same_parameters": "HTTP 200; 57 daily bars; AKShare call also succeeded",
+        "evidence": "runtime/verification/20261102-ashare-full/network-diagnosis.json"
+      },
+      "full_market_test": {
+        "provider_asset": "Sina raw daily via fixed AKShare 1.18.88 isolated environment",
+        "target_instruments": 5576,
+        "success_instruments": 5576,
+        "window": ["2015-01-01", "2026-10-30"],
+        "window_rows": 11393279,
+        "decoded_full_history_rows": 17055155,
+        "bootstrap_seconds": 2894.643,
+        "artifact_hash_failures": 0,
+        "duplicate_key_rows": 0,
+        "price_invalid_instruments": 36,
+        "missing_sessions_after_listing": 231002,
+        "research_ready": false,
+        "evidence": "docs/evidence/2026-11-02/a-share-full-market-test.json"
+      },
+      "adjustment_trials": {
+        "eastmoney_stratified": "30 instruments across five board groups; raw and qfq 60/60 succeeded; 29.845 seconds",
+        "sina_qfq_factor": "30 independent instruments; 228 factor records; all succeeded",
+        "evidence": "runtime/verification/20261102-ashare-full/eastmoney-stratified/report.json and runtime/verification/20261102-ashare-full/factors-pilot/report.json"
+      },
+      "research_ready": false
+    },
+    {
+      "provider": "Tencent",
+      "status": "existing_verified_pipeline_baseline",
+      "evidence": "docs/evidence/2026-11-02/dataflow-smoke.json",
+      "note": "640-bar observation is specific to the current adapter; not a statement about all Tencent products."
+    },
+    {
+      "provider": "AKQuant",
+      "product_installed": false,
+      "status": "official_documentation_review_only",
+      "evidence": "docs/evidence/2026-11-02/akquant-docs.json",
+      "source_ids": [
+        "S22",
+        "S23"
+      ],
+      "observed": "A-share guide uses AKShare; supports local file/DataFrame/DataFeed workflows. Rust matching performance does not validate upstream acquisition.",
+      "excluded_example_behavior": "Textbook random synthetic fallback after network failure is not accepted for real-data research or dashboard display"
+    }
+  ],
+  "code_references": [
+    {
+      "project": "Qlib",
+      "commit": "54355232463878d2eebb91fe0ee5fa7fa1f5976c",
+      "license": "MIT",
+      "files": [
+        "research/open_source/repos/qlib/scripts/data_collector/baostock_5min/collector.py",
+        "research/open_source/repos/qlib/scripts/data_collector/baostock_5min/README.md",
+        "research/open_source/repos/qlib/scripts/dump_bin.py",
+        "research/open_source/repos/qlib/scripts/data_collector/pit/collector.py",
+        "research/open_source/repos/qlib/scripts/data_collector/pit/README.md",
+        "research/open_source/repos/qlib/scripts/dump_pit.py"
+      ],
+      "reuse_limits": [
+        "5min get_data hardcodes time column and minute transformation despite 1d interval branch",
+        "HS300 union discards membership intervals",
+        "official new bin export stores a calendar offset header",
+        "PIT example selects few financial metrics and substitutes estimated dates when publication date is missing",
+        "roeAvg and express weighted ROE require distinct field semantics",
+        "prepared 5min v2 bundle ends 2022-12"
+      ]
+    },
+    {
+      "project": "AlphaEval-author",
+      "commit": "6300e8f30def996f99a00663d679fab14f6d0ba9",
+      "license": "MIT",
+      "files": [
+        "research/open_source/repos/AlphaEval-author/data_collection/fetch_baostock_data.py",
+        "research/open_source/repos/AlphaEval-author/LICENSE"
+      ],
+      "reuse_limits": [
+        "default 10-process fetching and repeated logins conflict with serial-only collection",
+        "current list union is not a historical universe",
+        "missing numeric strings replaced by zero",
+        "front-adjustment anchor and volume adjustment require validation"
+      ]
+    },
+    {
+      "project": "Legacy qlib_trading",
+      "access": "read only",
+      "files": [
+        "qlib_trading/alpha_agent/data_sources/news_fetcher.py",
+        "qlib_trading/alpha_agent/scripts/test_akshare_news.py",
+        "qlib_trading/alpha_agent/scripts/download_market_data.py"
+      ],
+      "reuse_limits": [
+        "news adapter untested in product environment",
+        "market downloader is AKShare, not BaoStock",
+        "custom binary export lacks official new-file date-index header and calendar alignment"
+      ]
+    },
+    {
+      "project": "AlphaAgent",
+      "commit": "b42cb397025510da44355db9dcf278304321f589",
+      "license": "not verified in local snapshot",
+      "files": [
+        "research/open_source/repos/AlphaAgent/alphaagent/data/market_fetch.py",
+        "research/open_source/repos/AlphaAgent/alphaagent/data/fundamental_fetch.py"
+      ],
+      "use": "architecture study only; no code copied; Tushare implementation not selected",
+      "reuse_limits": [
+        "latest row per report period is not a complete historical revision store"
+      ]
+    },
+    {
+      "project": "AKShare",
+      "package_version": "1.18.88",
+      "git_commit": null,
+      "license": "MIT",
+      "acquisition": "Selected source copied from installed Python package in an isolated environment; GitHub clone failed, no successful Git checkout claimed",
+      "snapshot": "research/open_source/source_snapshots/akshare-1.18.88",
+      "provenance": "research/open_source/source_snapshots/akshare-1.18.88/UPSTREAM.json",
+      "files": [
+        "research/open_source/source_snapshots/akshare-1.18.88/akshare/stock_feature/stock_hist_em.py",
+        "research/open_source/source_snapshots/akshare-1.18.88/akshare/stock_feature/stock_hist_tx.py",
+        "research/open_source/source_snapshots/akshare-1.18.88/akshare/stock/stock_zh_a_sina.py",
+        "research/open_source/source_snapshots/akshare-1.18.88/akshare/tool/trade_date_hist.py",
+        "research/open_source/source_snapshots/akshare-1.18.88/LICENSE"
+      ],
+      "reuse_limits": [
+        "Sina daily helper couples raw bars with a failing auxiliary share-count request",
+        "Do not copy broad forward-fill, OHLCV-value deduplication across dates, or remote-text eval into thesis cleaning/parsing rules",
+        "Tencent per-year loop and compact-date boundaries require dedicated validation",
+        "Library and custom adapters for the same actual supplier share one concurrency budget"
+      ]
+    }
+  ],
+  "acceptance_order": [
+    "Independent acquisition contracts, content-addressed raw storage and idempotent task database; preserve serial research-worker lock",
+    "Bounded source-group scheduling, subprocess deadlines, failure visibility and real-cache fallback",
+    "Offline replay of Sina raw sample, minimal daily adapter, separately accepted adjustment/calendar/security/news assets",
+    "Immutable snapshot quality gates and local API plus Vue data-control panels; no production archive overwrite",
+    "Existing 30-stock pool real incremental-batch verification against proposed 60-second budget; report fresh success, completeness and stale availability separately",
+    "Only after pilot acceptance evaluate 300 stocks, 2015-onward bootstrap and research input exports with final-test isolation",
+    "Optional news/financial extensions and AKQuant strategy-backtest semantics validation"
+  ],
+  "excluded_evidence": [
+    {
+      "url": "https://akshare.akfamily.xyz/data/stock/stock_history.html",
+      "reason": "nonexistent page; not used as evidence for the current stock-quote document"
+    },
+    {
+      "url": "https://www.baostock.com/old MediaWiki paths",
+      "reason": "redirects to homepage do not establish the contents of a named API document"
+    }
+  ],
+  "official_sources": [
+    {
+      "id": "S01",
+      "title": "Tushare 积分与频次表",
+      "url": "https://tushare.pro/document/1?doc_id=290",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "reference_in_survey",
+      "market_data_samples_validated": false,
+      "note": "Kept as official reference; this catalog does not attach a separate response body or claim SDK access."
+    },
+    {
+      "id": "S02",
+      "title": "Tushare 股票列表",
+      "url": "https://tushare.pro/document/2?doc_id=25",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "official_document_body_read",
+      "market_data_samples_validated": false,
+      "retrieval": {
+        "http_status": 200,
+        "page_title": "Tushare数据"
+      }
+    },
+    {
+      "id": "S03",
+      "title": "Tushare 复权因子",
+      "url": "https://tushare.pro/document/2?doc_id=28",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "official_document_body_read",
+      "market_data_samples_validated": false,
+      "retrieval": {
+        "http_status": 200,
+        "page_title": "Tushare数据"
+      }
+    },
+    {
+      "id": "S04",
+      "title": "Tushare 每日指标",
+      "url": "https://tushare.pro/document/2?doc_id=32",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "official_document_body_read",
+      "market_data_samples_validated": false,
+      "retrieval": {
+        "http_status": 200,
+        "page_title": "Tushare数据"
+      }
+    },
+    {
+      "id": "S05",
+      "title": "Tushare 指数成分权重",
+      "url": "https://tushare.pro/document/2?doc_id=96",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "official_document_body_read",
+      "market_data_samples_validated": false,
+      "retrieval": {
+        "http_status": 200,
+        "page_title": "Tushare数据"
+      }
+    },
+    {
+      "id": "S06",
+      "title": "Tushare 历史ST",
+      "url": "https://tushare.pro/document/2?doc_id=397",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "official_document_body_read",
+      "market_data_samples_validated": false,
+      "retrieval": {
+        "http_status": 200,
+        "page_title": "Tushare数据"
+      }
+    },
+    {
+      "id": "S07",
+      "title": "Tushare 利润表",
+      "url": "https://tushare.pro/document/2?doc_id=33",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "reference_in_survey",
+      "market_data_samples_validated": false,
+      "note": "Kept as official reference; this catalog does not attach a separate response body or claim SDK access."
+    },
+    {
+      "id": "S08",
+      "title": "BaoStock A股K线",
+      "url": "https://www.baostock.com/mainContent?file=stockKData.md",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "official_document_body_read",
+      "market_data_samples_validated": false,
+      "retrieval": {
+        "http_status": 200,
+        "page_title": "Baostock知识库"
+      }
+    },
+    {
+      "id": "S09",
+      "title": "BaoStock 证券基本资料",
+      "url": "https://www.baostock.com/mainContent?file=stockBasic.md",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "official_document_body_read",
+      "market_data_samples_validated": false,
+      "retrieval": {
+        "http_status": 200,
+        "page_title": "Baostock知识库"
+      }
+    },
+    {
+      "id": "S10",
+      "title": "BaoStock 复权因子",
+      "url": "https://www.baostock.com/mainContent?file=factorInfo.md",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "official_document_body_read",
+      "market_data_samples_validated": false,
+      "retrieval": {
+        "http_status": 200,
+        "page_title": "Baostock知识库"
+      }
+    },
+    {
+      "id": "S11",
+      "title": "BaoStock 访问规则",
+      "url": "https://www.baostock.com/blacklist",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "official_document_body_read",
+      "market_data_samples_validated": false,
+      "retrieval": {
+        "http_status": 200,
+        "page_title": "黑名单访问统计"
+      }
+    },
+    {
+      "id": "S12",
+      "title": "RQData 产品介绍",
+      "url": "https://www.ricequant.com/welcome/rqdata",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "official_document_body_read",
+      "market_data_samples_validated": false,
+      "retrieval": {
+        "http_status": 200,
+        "page_title": "RQData 米筐金融数据"
+      }
+    },
+    {
+      "id": "S13",
+      "title": "RQData 股票/PIT API",
+      "url": "https://www.ricequant.com/doc/rqdata/python/stock-mod",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "official_document_body_read",
+      "market_data_samples_validated": false,
+      "retrieval": {
+        "http_status": 200,
+        "page_title": "Ricequant Docs"
+      }
+    },
+    {
+      "id": "S14",
+      "title": "AKShare 行情文档",
+      "url": "https://akshare.akfamily.xyz/data/stock/stock_quote.html",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "reference_in_survey",
+      "market_data_samples_validated": false,
+      "note": "Official documentation reference plus separate isolated raw-sample probes; sample success does not validate all documented methods or adjusted datasets.",
+      "sample_evidence": "docs/evidence/2026-11-02/akshare-probe.json"
+    },
+    {
+      "id": "S15",
+      "title": "JQData 指数数据页",
+      "url": "https://www.joinquant.com/data/dict/indexData",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "region_restriction_page_only",
+      "market_data_samples_validated": false,
+      "retrieval": {
+        "http_status": 200,
+        "page_title": "当前地区暂不支持访问"
+      },
+      "note": "HTTP 200 contained a region restriction page, not product/API contents."
+    },
+    {
+      "id": "S16",
+      "title": "Tushare 平台积分",
+      "url": "https://tushare.pro/document/1?doc_id=13",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "official_document_body_read",
+      "market_data_samples_validated": false,
+      "retrieval": {
+        "http_status": 200,
+        "page_title": "Tushare数据"
+      }
+    },
+    {
+      "id": "S17",
+      "title": "Tushare 基础权限",
+      "url": "https://tushare.pro/document/1?doc_id=108",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "reference_in_survey",
+      "market_data_samples_validated": false,
+      "note": "Kept as official reference; this catalog does not attach a separate response body or claim SDK access."
+    },
+    {
+      "id": "S18",
+      "title": "BaoStock 本地前复权计算",
+      "url": "https://www.baostock.com/mainContent?file=localdatafactorInfo.md",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "official_document_body_read",
+      "market_data_samples_validated": false,
+      "retrieval": {
+        "http_status": 200,
+        "page_title": "Baostock知识库"
+      }
+    },
+    {
+      "id": "S19",
+      "title": "BaoStock 官方首页",
+      "url": "https://www.baostock.com/mainContent?file=home.md",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "official_document_body_read",
+      "market_data_samples_validated": false,
+      "evidence": "docs/evidence/2026-11-02/baostock-official-home.json"
+    },
+    {
+      "id": "S20",
+      "title": "BaoStock 每日更新",
+      "url": "https://www.baostock.com/mainContent?file=DailyUpdates.md",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "official_document_body_read",
+      "market_data_samples_validated": false,
+      "evidence": "docs/evidence/2026-11-02/baostock-official-home.json"
+    },
+    {
+      "id": "S21",
+      "title": "BaoStock Python API",
+      "url": "https://www.baostock.com/mainContent?file=pythonAPI.md",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "official_document_body_read",
+      "market_data_samples_validated": false,
+      "evidence": "docs/evidence/2026-11-02/baostock-official-home.json"
+    },
+    {
+      "id": "S22",
+      "title": "AKQuant 数据指南",
+      "url": "https://akquant.akfamily.xyz/guide/data/",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "official_document_body_read",
+      "market_data_samples_validated": false,
+      "evidence": "docs/evidence/2026-11-02/akquant-docs.json"
+    },
+    {
+      "id": "S23",
+      "title": "AKQuant 数据获取与 ETL 教材",
+      "url": "https://akquant.akfamily.xyz/textbook/03_data/",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "official_document_body_read",
+      "market_data_samples_validated": false,
+      "evidence": "docs/evidence/2026-11-02/akquant-docs.json"
+    },
+    {
+      "id": "S24",
+      "title": "AKShare 交易日历",
+      "url": "https://akshare.akfamily.xyz/data/tool/trade_date.html",
+      "reviewed_on": "2026-11-02",
+      "validation_level": "reference_in_survey_with_separate_calendar_probe",
+      "market_data_samples_validated": false,
+      "evidence": "docs/evidence/2026-11-02/akshare-probe.json"
+    }
+  ],
+  "limitations": [
+    "Official product claims and source-code capabilities are not successful data acquisition.",
+    "Software license does not establish financial-data redistribution rights.",
+    "No production source switch, product dependency change, global network/proxy change, or final-holdout evaluation performed in this research. AKShare was installed only in an isolated verification environment.",
+    "Raw daily samples and calendar were obtained; adjustment consistency, tradability, historical universe and batch/concurrent/longitudinal stability remain unaccepted.",
+    "New worker, API, Vue components and one-minute service targets are plans, not implemented product capabilities."
+  ],
+  "proposed_service_targets": {
+    "status": "designed_not_implemented_or_accepted",
+    "scope": "30-stock routine incremental batch with historical cache",
+    "batch_deadline_seconds": 60,
+    "network_budget_seconds": 45,
+    "child_deadline_seconds": 12,
+    "global_network_concurrency": 4,
+    "per_actual_supplier_initial_concurrency": 1,
+    "per_actual_supplier_min_start_interval_seconds": 0.5,
+    "transient_retry_max": 1,
+    "policy": "403 stops the source; 429 obeys Retry-After; all retries fit the remaining batch budget",
+    "local_summary_api_p95_target_seconds": 1,
+    "real_update_observations_before_reporting_p95": 20,
+    "separate_metrics": [
+      "fresh-update success",
+      "batch completeness",
+      "latency",
+      "verified stale-cache availability"
+    ],
+    "bootstrap": "Full historical/universe initial loading measured separately; not covered by one-minute target",
+    "evidence": "docs/evidence/2026-11-02/local-data-read-benchmark.json",
+    "evidence_boundary": "Five local reads only, not API or ingestion acceptance"
+  }
+}

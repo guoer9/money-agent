@@ -1,0 +1,112 @@
+{
+  "evidence_type": "standalone_full_market_raw_daily_acquisition",
+  "checked_at": "2026-11-02T09:38:48.238635+00:00",
+  "timezone": "Asia/Shanghai",
+  "product_root": "rdagent_thesis",
+  "verification_root": "runtime/verification/20261102-ashare-full",
+  "source": {
+    "library": "AKShare",
+    "isolated_version": "1.18.88",
+    "environment": "runtime/verification/20261102-akshare/venv",
+    "asset": "Sina raw daily bars",
+    "product_dependency_changed": false
+  },
+  "universe": {
+    "scope": "Current official A-share universe; CDR excluded; not all historical or delisted securities",
+    "target_instruments": 5576,
+    "success_instruments": 5576,
+    "exchanges": {
+      "sh": 2317,
+      "sz": 2905,
+      "bj": 354
+    },
+    "securities_sha256": "3eaa32cc47a10df6bff9b5a6d27f999a64a447088250f23c78786e94b53c832d",
+    "securities_path": "runtime/verification/20261102-ashare-full/securities.parquet"
+  },
+  "acquisition": {
+    "requested_window": [
+      "2015-01-01",
+      "2026-10-30"
+    ],
+    "window_rows": 11393279,
+    "decoded_full_history_rows": 17055155,
+    "started_at": "2026-11-02T08:49:24.999153+00:00",
+    "finished_at": "2026-11-02T09:37:39.641872+00:00",
+    "elapsed_seconds": 2894.643,
+    "status_counts": {
+      "success": 5576
+    },
+    "artifact_hash_failures": 0,
+    "duplicate_key_rows": 0,
+    "raw_bytes": 216378495,
+    "parquet_bytes": 468610612,
+    "request_latency_seconds": {
+      "sample_count": 5542,
+      "p50": 0.12991104149841703,
+      "p95": 0.25432523364906956,
+      "max": 1.8294628750008997,
+      "scope": "One bootstrap run; not a longitudinal SLO"
+    }
+  },
+  "audit": {
+    "nonempty_window_instruments": 5576,
+    "rows_after_current_exchange_listing": 11370875,
+    "rows_before_current_exchange_listing": 22404,
+    "price_invalid_instruments_in_window": 36,
+    "price_invalid_rows_in_window": 200,
+    "price_invalid_rows_after_listing": 3,
+    "zero_volume_rows_in_window": 35,
+    "missing_sessions_after_listing": 231002,
+    "unexpected_calendar_dates_after_listing": 0,
+    "last_date_counts": {
+      "2026-10-30": 5570,
+      "2026-10-23": 2,
+      "2026-10-20": 1,
+      "2026-10-28": 1,
+      "2026-09-10": 1,
+      "2026-10-12": 1
+    },
+    "research_ready": false,
+    "final_test_evaluated": false,
+    "quality_boundary": "Missing sessions may include suspensions or source omissions; no zero-fill and no automatic research acceptance"
+  },
+  "related_trials": {
+    "eastmoney_stratified": {
+      "instruments": 30,
+      "requests": 60,
+      "success": 60,
+      "elapsed_seconds": 29.845,
+      "scope": "Raw and provider-qfq, 2025Q1, six instruments per board group"
+    },
+    "sina_qfq_factor": {
+      "instruments": 30,
+      "success": 30,
+      "factor_records": 228,
+      "scope": "Independent factor asset pilot"
+    }
+  },
+  "network_context": {
+    "user_confirmed_manual_vpn_switching": true,
+    "before": {
+      "dns": "198.18 synthetic IP",
+      "route_interface": "utun6",
+      "eastmoney": "TLS EOF or timeout without HTTP response"
+    },
+    "after": {
+      "dns": "public IPv4",
+      "route_interface": "en0",
+      "eastmoney": "HTTP 200 with 57 daily bars using the same parameters"
+    },
+    "interpretation": "VPN switching is consistent with route change and recovery; exact rule or protocol was not isolated"
+  },
+  "artifact_paths": {
+    "acquisition_report": "runtime/verification/20261102-ashare-full/daily/report.json",
+    "audit_report": "runtime/verification/20261102-ashare-full/audit.json",
+    "coverage_csv": "runtime/verification/20261102-ashare-full/security-coverage.csv",
+    "quality_issues": "runtime/verification/20261102-ashare-full/price-quality-issues.json",
+    "raw_directory": "runtime/verification/20261102-ashare-full/daily/raw",
+    "parquet_directory": "runtime/verification/20261102-ashare-full/daily/parquet",
+    "network_diagnosis": "runtime/verification/20261102-ashare-full/network-diagnosis.json"
+  },
+  "production_boundary": "Standalone verification only; did not replace runtime/data, current Tencent archive, research baselines, or final-test evaluation"
+}

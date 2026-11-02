@@ -150,6 +150,8 @@
 .quality-list>div { padding:12px; background:#142031; min-width:0; }
 .quality-list span { font-size:10px; color:#8399b2; display:block; }
 .quality-list b { font-size:12px; color:#b7c9db; font-weight:400; overflow-wrap:anywhere; display:block; margin-top:4px; }
+.quality-details { margin-top:18px; color:#91a6be; font-size:11px; }
+.quality-details summary { cursor:pointer; }
 .split-list>div { display:flex; align-items:center; gap:16px; border:1px solid #35463d; border-radius:6px; background:#17251f; padding:18px 15px; margin-bottom:12px; }
 .split-number { font:14px ui-monospace,monospace; color:#a1be8c; }
 .split-list h3 { font-size:13px; font-weight:400; }

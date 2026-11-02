@@ -1,0 +1,52 @@
+{
+  "checked_at": "2026-11-02T06:53:55.676953+00:00",
+  "provider": "BaoStock",
+  "version": "0.9.4",
+  "budget": "zero",
+  "mode": "anonymous SDK; serial requests",
+  "queries": [],
+  "status": "blocked_at_login",
+  "login_success": false,
+  "sample_rows_downloaded": 0,
+  "initial_attempt": {
+    "status": "interrupted_after_more_than_5_minutes",
+    "socket_default_timeout_seconds": 8,
+    "interruption": "SIGINT to verified probe PID 77201; exit code 130",
+    "traceback_location": "baostock/util/socketutil.py:72 recv in send_msg called by login",
+    "data_queries_started": 0,
+    "note": "Initial finally block retained started; corrected after collecting exit and traceback."
+  },
+  "bounded_diagnostic": {
+    "mode": "one serial anonymous login, process-local socket observation; no installed SDK edits",
+    "events": [
+      {
+        "stage": "tcp_connect",
+        "target_host": "public-api.baostock.com",
+        "target_port": 10030,
+        "outcome": "connected",
+        "elapsed_seconds": 0.004
+      },
+      {
+        "stage": "send",
+        "bytes_sent": 57
+      },
+      {
+        "stage": "recv",
+        "bytes_received": 0
+      }
+    ],
+    "login_success": false,
+    "error_code": "10002007",
+    "error_msg": "网络接收错误。",
+    "exit_code": 0,
+    "elapsed_seconds": 0.834,
+    "parent_timeout_seconds": 20
+  },
+  "completed_at": "2026-11-02T07:01:16.086899+00:00",
+  "diagnosis": {
+    "observed": "TCP connected; first recv returned empty bytes before login response.",
+    "initial_hang_explanation": "Installed SDK receive loop has no EOF exit; empty reads do not trigger socket timeout.",
+    "upstream_close_reason": "not established",
+    "diagnostic_scope": "EOF handling changed in one diagnostic child process only; installed SDK and product unchanged."
+  }
+}

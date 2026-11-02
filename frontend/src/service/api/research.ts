@@ -51,12 +51,43 @@ export interface ResearchRun {
   result?: Record<string, unknown> | null;
 }
 
+export interface ResearchEvidence {
+  checked_at: string;
+  archive_link: { status: string; displayed_dataset_id: string | null; checked_dataset_id: string | null; displayed_sha256: string | null; checked_sha256: string | null };
+  dataset: {
+    status: string;
+    pit_status: string;
+    panel: { status: string; actual_sha256?: string; expected_sha256?: string };
+    raw: { total: number; verified: number; missing: number; mismatch: number; unreadable: number; invalid_path: number; unrecorded: number };
+    normalized_fingerprints: number;
+    snapshot_time: string | null;
+    manifest_sha256: string | null;
+  };
+  corpus: {
+    note_count: number;
+    temporary_files: { referenced: number; available: number; missing: number };
+    notes: {
+      id: string;
+      round: number;
+      date: string;
+      title: string;
+      category: string;
+      path: string;
+      sha256: string;
+      evidence_level: string;
+      temporary_references: { referenced: number; available: number; missing: number };
+    }[];
+  };
+  boundaries: { title: string; status: string; detail: string }[];
+}
+
 export interface Overview {
   archive: ResearchArchive | null;
   runs: ResearchRun[];
   environment: { llm_configured: boolean; rdagent_available: boolean; worker_running: boolean; model: string | null };
   final_test: { status: string; message: string };
   server_time: string;
+  evidence: ResearchEvidence;
 }
 
 async function researchRequest<T>(path: string, init: RequestInit = {}): Promise<T> {

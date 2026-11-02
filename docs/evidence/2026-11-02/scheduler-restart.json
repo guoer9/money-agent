@@ -1,0 +1,16 @@
+{
+  "old_pid": "970",
+  "new_pid": "26156",
+  "before": {
+    "status": "running",
+    "interval_seconds": 1800,
+    "deadline_at": "2026-11-02T16:46:54+00:00",
+    "rounds_queued": 25
+  },
+  "after": {
+    "status": "running",
+    "interval_seconds": 1800,
+    "deadline_at": "2026-11-02T16:46:54+00:00",
+    "rounds_queued": 25
+  }
+}

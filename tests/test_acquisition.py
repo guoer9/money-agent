@@ -55,6 +55,33 @@ def test_fetch_archives_exact_response_hash_and_single_adjustment_range(tmp_path
     assert hashlib.sha256((tmp_path / 'panel.parquet').read_bytes()).hexdigest() == manifest['sha256']
 
 
+def test_price_fingerprint_ignores_wrapper_but_detects_changed_price(tmp_path):
+    bodies = [payload(), payload(), payload()]
+    bodies[1]['data']['sh600000']['qt']['sh600000'][1] = '不同的报价包装'
+    bodies[1]['data']['sh600000']['qfqday'][0].append({'FHcontent': '附属信息'})
+    bodies[2]['data']['sh600000']['qfqday'][0][2] = '11.5'
+    records = []
+    for i, body in enumerate(bodies):
+        with httpx.Client(transport=httpx.MockTransport(lambda req: httpx.Response(200, json=body, request=req))) as client:
+            manifest = fetch_market(['sh600000'], '2024-01-01', '2024-12-31', tmp_path / str(i),
+                                    client=client, min_rows=2, min_instruments=1)
+        records.append(manifest['raw_responses'][0])
+    assert records[0]['sha256'] != records[1]['sha256']
+    assert records[0]['normalized_prices_sha256'] == records[1]['normalized_prices_sha256']
+    assert records[0]['normalized_prices_sha256'] != records[2]['normalized_prices_sha256']
+
+
+def test_nonfinite_bar_is_still_cleaned_without_rejecting_the_instrument(tmp_path):
+    body = payload()
+    body['data']['sh600000']['qfqday'].append(['2024-01-04', '12', 'NaN', '13', '10', '100'])
+    with httpx.Client(transport=httpx.MockTransport(lambda req: httpx.Response(200, json=body, request=req))) as client:
+        manifest = fetch_market(['sh600000'], '2024-01-01', '2024-12-31', tmp_path,
+                                client=client, min_rows=2, min_instruments=1, retries=0)
+    assert manifest['rows'] == 2
+    assert manifest['quality']['invalid_removed'] == 1
+    assert manifest['raw_responses'][0]['normalized_prices_sha256']
+
+
 def test_fetch_fails_below_threshold_without_synthetic_replacement(tmp_path):
     with httpx.Client(transport=httpx.MockTransport(lambda req: httpx.Response(503, text='unavailable', request=req))) as client:
         with pytest.raises(ValueError, match='valid rows'):

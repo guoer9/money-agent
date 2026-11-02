@@ -1,0 +1,18 @@
+{
+  "checked_at": "2026-11-02T07:39:27.986542+00:00",
+  "validation": "official documentation only; AKQuant engine not installed or benchmarked",
+  "documents": [
+    {
+      "url": "https://akquant.akfamily.xyz/guide/data/",
+      "http_status": 200,
+      "raw_path": "runtime/verification/20261102-akshare/guide-data.html",
+      "sha256": "ec5513076090462e2d90ab341d4b35edf288d71ea232bc3290b4a55f74584658"
+    },
+    {
+      "url": "https://akquant.akfamily.xyz/textbook/03_data/",
+      "http_status": 200,
+      "raw_path": "runtime/verification/20261102-akshare/textbook-03_data.html",
+      "sha256": "a68624fc3535fafe94a2ac8ffeb5138c564be5f6ee09313e0966106d1bb96c8f"
+    }
+  ]
+}

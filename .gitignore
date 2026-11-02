@@ -3,6 +3,7 @@ __pycache__/
 .pytest_cache/
 .superpowers/
 .playwright-cli/
+releases/
 node_modules/
 .pnpm-store/
 dist/
@@ -15,5 +16,6 @@ runtime/*.sqlite3
 runtime/*.lock
 runtime/*.log
 .env
+!frontend/.env
 *.egg-info/
 .DS_Store

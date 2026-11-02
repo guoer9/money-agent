@@ -1,0 +1,51 @@
+{
+  "checked_at": "2026-11-02T07:18:29.481286+00:00",
+  "source_type": "official_documentation",
+  "requested_by_user": "https://www.baostock.com/mainContent?file=home.md",
+  "market_data_validation": "not performed; separate anonymous SDK login failed",
+  "documents": [
+    {
+      "title": "平台介绍",
+      "page_url": "https://www.baostock.com/mainContent?file=home.md",
+      "body_url": "https://www.baostock.com/helpdocs/api/markdown/home.md",
+      "read_method": "POST {} used by the public documentation viewer; read only",
+      "http_status": 200,
+      "raw_path": "runtime/verification/20261102-baostock/official-home-response.txt",
+      "sha256": "6a931ebea4ff858c46cf89e6c8f448b755cceab10071a35265b576ff09545884",
+      "bytes": 10167
+    },
+    {
+      "title": "每日更新",
+      "page_url": "https://www.baostock.com/mainContent?file=DailyUpdates.md",
+      "body_url": "https://www.baostock.com/helpdocs/api/markdown/DailyUpdates.md",
+      "read_method": "POST {} used by the public documentation viewer; read only",
+      "http_status": 200,
+      "raw_path": "runtime/verification/20261102-baostock/DailyUpdates.md",
+      "sha256": "ddb5f1e153c44ab0e76cebd4506ff0075def6d8884c7fd1d2cd523e2f75a70c8",
+      "bytes": 15120
+    },
+    {
+      "title": "Python API文档",
+      "page_url": "https://www.baostock.com/mainContent?file=pythonAPI.md",
+      "body_url": "https://www.baostock.com/helpdocs/api/markdown/pythonAPI.md",
+      "read_method": "POST {} used by the public documentation viewer; read only",
+      "http_status": 200,
+      "raw_path": "runtime/verification/20261102-baostock/pythonAPI.md",
+      "sha256": "0437dafc182f56094876bb2d15e5045b60c15ab5322ea0b716925ef61a1c0f4a",
+      "bytes": 72580
+    }
+  ],
+  "findings": {
+    "basic_access": "Homepage describes free service without registration; anonymous login remains in official examples.",
+    "sdk_0_9_4": "2026-09-21: optional API Key support for VIP node; no purchase or key used in this research.",
+    "sdk_0_9_3": "2026-07-10: daily cross-section A-stock/ETF bars and adjustment-factor APIs added.",
+    "documented_update_times": {
+      "daily_bars": "17:30",
+      "adjustment_factors": "18:00",
+      "minute_bars": "20:00",
+      "other_financial_reports": "01:30 next calendar day"
+    },
+    "architecture_implication": "Consider per-instrument historical bootstrap plus per-date incremental cross-sections; verify permission, coverage, paging and units before adoption. Publish snapshots only after both bars and factors pass quality checks.",
+    "coverage_limit": "Documented coverage is not downloaded coverage; no strict PIT revision-history guarantee."
+  }
+}

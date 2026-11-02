@@ -1,0 +1,127 @@
+{
+  "checked_at": "2026-11-02T07:37:32.849462+00:00",
+  "scope": "isolated environment; small serial probes; no product source switch",
+  "queries": [
+    {
+      "query": "eastmoney_daily",
+      "status": "hard_timeout",
+      "parent_timeout_seconds": 15,
+      "wall_seconds": 15.011
+    },
+    {
+      "query": "sina_calendar",
+      "http_events": [
+        {
+          "method": "get",
+          "url": "https://finance.sina.com.cn/realstock/company/klc_td_sh.txt",
+          "elapsed_seconds": 0.587,
+          "status_code": 200,
+          "bytes": 508,
+          "raw_path": "runtime/verification/20261102-akshare/sina_calendar-0.response",
+          "sha256": "d5112e08726ecc435092fb63547a34fc514b071b1a4a84f9e2c29fb9023726a9"
+        }
+      ],
+      "akshare_version": "1.18.88",
+      "status": "success",
+      "rows": 8797,
+      "columns": [
+        "trade_date"
+      ],
+      "start": "1990-12-19",
+      "end": "2026-12-31",
+      "elapsed_seconds": 7.288,
+      "process_exit_code": 0,
+      "wall_seconds": 7.425
+    },
+    {
+      "query": "sina_daily",
+      "http_events": [
+        {
+          "method": "get",
+          "url": "https://finance.sina.com.cn/realstock/company/sh600000/hisdata_klc2/klc_kl.js",
+          "elapsed_seconds": 0.631,
+          "status_code": 200,
+          "bytes": 82445,
+          "raw_path": "runtime/verification/20261102-akshare/sina_daily-0.response",
+          "sha256": "92239782d3f55781844552d7f2748e93611c7b725dc1313a6c526c5cb586d172"
+        },
+        {
+          "method": "get",
+          "url": "https://stock.finance.sina.com.cn/stock/api/jsonp.php/var%20KKE_ShareAmount_sh600000=/StockService.getAmountBySymbol?_=20&symbol=sh600000",
+          "elapsed_seconds": 0.377,
+          "error_type": "SSLError"
+        }
+      ],
+      "akshare_version": "1.18.88",
+      "status": "failed",
+      "error_type": "SSLError",
+      "message": "HTTPSConnectionPool(host='stock.finance.sina.com.cn', port=443): Max retries exceeded with url: /stock/api/jsonp.php/var%20KKE_ShareAmount_sh600000=/StockService.getAmountBySymbol?_=20&symbol=sh600000 (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1017)')))",
+      "elapsed_seconds": 1.378,
+      "process_exit_code": 0,
+      "wall_seconds": 1.515
+    },
+    {
+      "query": "sina_qfq_factor",
+      "akshare_version": "1.18.88",
+      "http_events": [
+        {
+          "url": "https://finance.sina.com.cn/realstock/company/sh600000/qfq.js",
+          "started_seconds": 0.472,
+          "finished_seconds": 6.491
+        }
+      ],
+      "import_seconds": 0.472,
+      "status": "failed",
+      "error_type": "ReadTimeout",
+      "message": "HTTPSConnectionPool(host='finance.sina.com.cn', port=443): Read timed out. (read timeout=6)",
+      "elapsed_seconds": 6.491,
+      "process_exit_code": 0,
+      "wall_seconds": 6.644
+    },
+    {
+      "query": "eastmoney_daily_warm",
+      "akshare_version": "1.18.88",
+      "http_events": [
+        {
+          "url": "https://push2his.eastmoney.com/api/qt/stock/kline/get",
+          "started_seconds": 0.34,
+          "finished_seconds": 6.352
+        }
+      ],
+      "import_seconds": 0.34,
+      "status": "failed",
+      "error_type": "ReadTimeout",
+      "message": "HTTPSConnectionPool(host='push2his.eastmoney.com', port=443): Read timed out. (read timeout=6)",
+      "elapsed_seconds": 6.353,
+      "process_exit_code": 0,
+      "wall_seconds": 6.51
+    }
+  ],
+  "offline_sina_decode": {
+    "mode": "offline decode of previously fetched raw Sina kline response using AKShare packaged decoder; no new HTTP call",
+    "raw_rows": 6417,
+    "columns": [
+      "date",
+      "prevclose",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount",
+      "postVol",
+      "postAmt"
+    ],
+    "raw_start": "1999-11-10 00:00:00+00:00",
+    "raw_end": "2026-10-30 00:00:00+00:00",
+    "training_window": [
+      "2015-01-01",
+      "2015-03-31"
+    ],
+    "sample_rows": 57,
+    "sample_path": "runtime/verification/20261102-akshare/sina-raw-daily-2015q1.csv",
+    "elapsed_seconds": 0.2,
+    "adjustment": "unadjusted; factors not inferred",
+    "quality_boundary": "decoded raw bars only; no historical universe, factor consistency or tradability acceptance"
+  }
+}

@@ -1,0 +1,345 @@
+{
+  "checked_at": "2026-11-02T06:14:27.786061+00:00",
+  "kind": "fresh-network-acquisition-and-isolated-worker-http-smoke",
+  "isolated_root": "/Volumes/2tb/mydata/code/Quantitative_trading/rdagent_thesis/runtime/verification/20261102-dataflow",
+  "base_url": "http://127.0.0.1:18001",
+  "checks": {
+    "acquisition": {
+      "status": "passed",
+      "downloaded_at": "2026-11-02T06:12:05.913408+00:00",
+      "dataset_id": "tencent-qfq-20261102T061200-c3fad3a4c4",
+      "rows": 19190,
+      "instruments": 30,
+      "actual_range": [
+        "2024-03-11",
+        "2026-10-30"
+      ],
+      "requested_range": [
+        "2024-01-01",
+        "2026-10-30"
+      ],
+      "raw_http_200_verified": 31,
+      "normalized_price_hashes_recomputed": 30,
+      "panel_sha256": "1ce0f66b3541711961b8cc08abd94d24c434265c4eda94a1c979b99c87b82623",
+      "failures": [],
+      "quality": {
+        "input_rows": 19200,
+        "valid_rows": 19190,
+        "duplicates_removed": 0,
+        "duplicate_rows_excluded": 0,
+        "conflicting_duplicate_rows": 0,
+        "invalid_removed": 0,
+        "zero_volume_rows": 0,
+        "missing_values_filled": 0,
+        "duplicate_policy": "exclude all bars at a duplicated key",
+        "volume_unit": "lots (100 shares)",
+        "volume_converted": false,
+        "survivorship_bias": true,
+        "universe_policy": "fixed convenience pool selected at acquisition; not point-in-time constituents",
+        "raw_prices_available": false,
+        "adjusted_ohlc": true,
+        "adjustment_warning": "vendor qfq snapshot; adjustment factors and point-in-time corporate actions are not provided",
+        "calendar_source": "Tencent sh000001 daily index dates",
+        "calendar_covers_observed_dates": true,
+        "calendar_mismatch_rows_removed": 10,
+        "calendar_sessions": 640,
+        "missing_instrument_sessions": 10,
+        "requested_instruments": 30,
+        "successful_instruments": 30,
+        "minimum_instruments_required": 2,
+        "rows_by_instrument": {
+          "sh600000": 640,
+          "sh600009": 640,
+          "sh600016": 640,
+          "sh600028": 640,
+          "sh600030": 640,
+          "sh600036": 640,
+          "sh600048": 640,
+          "sh600050": 640,
+          "sh600104": 640,
+          "sh600111": 640,
+          "sh600276": 640,
+          "sh600309": 640,
+          "sh600519": 640,
+          "sh600585": 640,
+          "sh600690": 640,
+          "sh600887": 640,
+          "sh601088": 630,
+          "sh601166": 640,
+          "sh601318": 640,
+          "sh601398": 640,
+          "sh601668": 640,
+          "sh601857": 640,
+          "sz000001": 640,
+          "sz000002": 640,
+          "sz000063": 640,
+          "sz000333": 640,
+          "sz000651": 640,
+          "sz000858": 640,
+          "sz002415": 640,
+          "sz300750": 640
+        },
+        "single_range_per_instrument": true,
+        "anchor_splicing": false,
+        "provider_bar_limit": 640,
+        "requested_range_truncated_by_cap": true,
+        "final_test_evaluated": false
+      },
+      "splits": {
+        "train": [
+          "2024-03-11",
+          "2025-10-10"
+        ],
+        "validation": [
+          "2025-10-13",
+          "2026-04-21"
+        ],
+        "test": [
+          "2026-04-22",
+          "2026-10-30"
+        ]
+      }
+    },
+    "worker_queue": {
+      "status": "passed",
+      "run_id": "eda81130744641c2be9bd875834e3a62",
+      "elapsed_seconds": 2.209,
+      "observed_states": [
+        "queued",
+        "running",
+        "complete"
+      ],
+      "event_stages": [
+        "queued",
+        "running",
+        "baseline",
+        "complete"
+      ],
+      "idempotency_replayed": true,
+      "separate_worker_process": true
+    },
+    "factor_evaluation": {
+      "status": "passed",
+      "factor_count": 6,
+      "evaluated_segments": [
+        "validation"
+      ],
+      "test_evaluated": false,
+      "factor_metrics": [
+        {
+          "id": "baseline-momentum-20",
+          "ic_mean": 0.01724768235565809,
+          "rank_ic_mean": 0.0037398713069368194,
+          "ic_ir": 0.05604536072891237,
+          "rank_ic_ir": 0.012503346974244321,
+          "coverage": 1.0,
+          "valid_ic_days": 126,
+          "valid_rank_ic_days": 126,
+          "icir": 0.05604536072891237,
+          "rank_icir": 0.012503346974244321,
+          "valid_days": 126
+        },
+        {
+          "id": "baseline-reversal-5",
+          "ic_mean": -0.030267944026779074,
+          "rank_ic_mean": -0.025886395212807403,
+          "ic_ir": -0.10392468349524943,
+          "rank_ic_ir": -0.09014015038076711,
+          "coverage": 1.0,
+          "valid_ic_days": 126,
+          "valid_rank_ic_days": 126,
+          "icir": -0.10392468349524943,
+          "rank_icir": -0.09014015038076711,
+          "valid_days": 126
+        },
+        {
+          "id": "baseline-low-volatility-20",
+          "ic_mean": -0.013245648449868551,
+          "rank_ic_mean": 0.01661434932566679,
+          "ic_ir": -0.04423109036897811,
+          "rank_ic_ir": 0.05874752892415399,
+          "coverage": 1.0,
+          "valid_ic_days": 126,
+          "valid_rank_ic_days": 126,
+          "icir": -0.04423109036897811,
+          "rank_icir": 0.05874752892415399,
+          "valid_days": 126
+        },
+        {
+          "id": "baseline-volume-ratio-5-20",
+          "ic_mean": -0.027400984659743294,
+          "rank_ic_mean": -0.014869939844313458,
+          "ic_ir": -0.11934579504864594,
+          "rank_ic_ir": -0.06515319213736963,
+          "coverage": 1.0,
+          "valid_ic_days": 126,
+          "valid_rank_ic_days": 126,
+          "icir": -0.11934579504864594,
+          "rank_icir": -0.06515319213736963,
+          "valid_days": 126
+        },
+        {
+          "id": "baseline-price-ma-20",
+          "ic_mean": 0.0290727196840467,
+          "rank_ic_mean": 0.02337943309409543,
+          "ic_ir": 0.10264843651447204,
+          "rank_ic_ir": 0.08132005523017484,
+          "coverage": 1.0,
+          "valid_ic_days": 126,
+          "valid_rank_ic_days": 126,
+          "icir": 0.10264843651447204,
+          "rank_icir": 0.08132005523017484,
+          "valid_days": 126
+        },
+        {
+          "id": "baseline-intraday-strength",
+          "ic_mean": 0.013237722218683416,
+          "rank_ic_mean": 0.021872978614301316,
+          "ic_ir": 0.0530144128996405,
+          "rank_ic_ir": 0.09067571820848161,
+          "coverage": 1.0,
+          "valid_ic_days": 126,
+          "valid_rank_ic_days": 126,
+          "icir": 0.0530144128996405,
+          "rank_icir": 0.09067571820848161,
+          "valid_days": 126
+        }
+      ]
+    },
+    "http_and_export": {
+      "status": "passed",
+      "routes": {
+        "/api/datasets": {
+          "http_status": 200,
+          "bytes": 2337
+        },
+        "/api/factors": {
+          "http_status": 200,
+          "bytes": 339600
+        },
+        "/api/runs": {
+          "http_status": 200,
+          "bytes": 344213
+        },
+        "/api/evidence": {
+          "http_status": 200,
+          "bytes": 1779
+        },
+        "/api/reports/export": {
+          "http_status": 200,
+          "bytes": 689729
+        },
+        "/home?view=overview": {
+          "http_status": 200,
+          "bytes": 665
+        },
+        "/home?view=data": {
+          "http_status": 200,
+          "bytes": 665
+        }
+      },
+      "dataset_id": "tencent-qfq-20261102T061200-c3fad3a4c4",
+      "integrity": {
+        "status": "verified",
+        "pit_status": "unverified",
+        "panel": {
+          "status": "verified",
+          "expected_sha256": "1ce0f66b3541711961b8cc08abd94d24c434265c4eda94a1c979b99c87b82623",
+          "actual_sha256": "1ce0f66b3541711961b8cc08abd94d24c434265c4eda94a1c979b99c87b82623"
+        },
+        "raw": {
+          "total": 31,
+          "verified": 31,
+          "missing": 0,
+          "mismatch": 0,
+          "unreadable": 0,
+          "invalid_path": 0,
+          "unrecorded": 0
+        },
+        "normalized_fingerprints": 30,
+        "snapshot_time": "2026-11-02T06:12:05.913408+00:00",
+        "manifest_sha256": "2a8a5d4982b93314e57561d9baa4d7a1d637e629908a29b44be28523fa3768a4",
+        "id": "tencent-qfq-20261102T061200-c3fad3a4c4"
+      },
+      "archive_link": {
+        "status": "matched",
+        "displayed_dataset_id": "tencent-qfq-20261102T061200-c3fad3a4c4",
+        "checked_dataset_id": "tencent-qfq-20261102T061200-c3fad3a4c4",
+        "displayed_sha256": "1ce0f66b3541711961b8cc08abd94d24c434265c4eda94a1c979b99c87b82623",
+        "checked_sha256": "1ce0f66b3541711961b8cc08abd94d24c434265c4eda94a1c979b99c87b82623"
+      }
+    },
+    "intended_full_loop": {
+      "status": "incomplete",
+      "environment": {
+        "llm_configured": false,
+        "rdagent_available": false,
+        "worker_running": true,
+        "model": null
+      },
+      "llm_submit_http_status": 503,
+      "llm_block_reason": {
+        "detail": "LLM 未配置：请设置 API key 和模型名，并在 API 与 worker 进程中使用相同配置"
+      },
+      "final_test": {
+        "status": "not_run",
+        "message": "最终独立测试尚未执行；当前归档仅用于验证集研究。"
+      },
+      "missing": [
+        "acquisition API/frontend task",
+        "scheduled incremental ingestion",
+        "real RD-Agent adapter",
+        "real LLM generation and feedback",
+        "candidate freeze",
+        "independent final test",
+        "tradable strategy backtest"
+      ]
+    }
+  },
+  "browser": {
+    "status": "passed",
+    "frontend_submission": {
+      "run_id": "227afaf524b247798b3afb9c5953f0e8",
+      "status": "complete",
+      "mode": "baseline",
+      "event_stages": [
+        "queued",
+        "running",
+        "baseline",
+        "complete"
+      ]
+    },
+    "fresh_dataset_id_visible": "tencent-qfq-20261102T061200-c3fad3a4c4",
+    "integrity_and_archive_link_visible": true,
+    "snapshots": [
+      "runtime/verification/20261102-dataflow/runtime/verification/frontend-run.txt",
+      "runtime/verification/20261102-dataflow/runtime/verification/frontend-data.txt"
+    ],
+    "screenshots": [
+      "docs/evidence/2026-11-02/dataflow-frontend-complete.jpg",
+      "docs/evidence/2026-11-02/dataflow-fresh-dataset.jpg"
+    ]
+  },
+  "tested_scope_status": "passed",
+  "main_archive_preserved": {
+    "runtime/data/manifest.json": true,
+    "runtime/data/panel.parquet": true,
+    "runtime/artifacts/baselines.json": true
+  },
+  "artifacts_directory": "/Volumes/2tb/mydata/code/Quantitative_trading/rdagent_thesis/runtime/verification/20261102-dataflow/runtime/verification",
+  "isolated_completed_run_count": 2,
+  "final_archive_generated_at": "2026-11-02T06:17:22.481614+00:00",
+  "main_service_after_verification": {
+    "http_status": 200,
+    "worker_running": true,
+    "archive_link": "matched",
+    "dataset_id": "tencent-qfq-20261101T143908-d1ef67035f",
+    "unchanged_dataset_id": true
+  },
+  "finished_at": "2026-11-02T06:20:51.880388+00:00",
+  "isolated_service_cleanup": {
+    "api_stopped": true,
+    "worker_stopped": true
+  },
+  "verification_note": "docs/dataflow-verification-2026-11-02.md"
+}

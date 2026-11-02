@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-11-02T07:45:58.845936+00:00",
+  "operation": "local full Parquet read only; no factor evaluation or final-test run",
+  "path": "runtime/data/panel.parquet",
+  "rows": 19190,
+  "sha256": "1ce0f66b3541711961b8cc08abd94d24c434265c4eda94a1c979b99c87b82623",
+  "runs_seconds": [
+    0.217658,
+    0.001824,
+    0.001606,
+    0.001538,
+    0.001633
+  ],
+  "median_seconds": 0.001633,
+  "max_seconds": 0.217658,
+  "boundary": "Small current dataset, five local reads; not API latency or scaled refresh SLA."
+}

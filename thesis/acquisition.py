@@ -10,6 +10,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -83,6 +84,26 @@ def parse_tencent_response(response: dict, code: str) -> pd.DataFrame:
         raise ValueError(f"missing or malformed qfqday for {code}") from exc
 
 
+def normalized_prices_sha256(frame: pd.DataFrame) -> str:
+    """Stable price-content hash, independent of quote wrappers/event metadata.
+
+    v1 hashes parsed date, instrument, OHLC and source-unit volume, ordered by
+    date/instrument. Duplicates are retained; this does not certify data quality.
+    """
+    columns = ["datetime", "instrument", "open", "high", "low", "close", "volume"]
+    rows = frame[columns].sort_values(["datetime", "instrument"], kind="stable").copy()
+    rows["datetime"] = rows["datetime"].dt.strftime("%Y-%m-%d")
+    records = rows.to_dict("records")
+    for row in records:
+        for column in columns[2:]:
+            number = row[column]
+            if not math.isfinite(number):
+                row[column] = "NaN" if math.isnan(number) else "Infinity" if number > 0 else "-Infinity"
+    content = json.dumps({"schema": "alphalab-ohlcv-v1", "rows": records},
+                         ensure_ascii=False, allow_nan=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(content.encode("utf-8")).hexdigest()
+
+
 def fetch_market(codes, start, end, output, *, client=None, min_rows: int = 10000,
                  min_instruments: int = 2, retries: int = 2, calendar_code: str | None = None) -> dict:
     """One common 640-bar qfq query per stock, immutable raw responses + hashes.
@@ -138,6 +159,8 @@ def fetch_market(codes, start, end, output, *, client=None, min_rows: int = 1000
                 else:
                     value = parse_tencent_response(body, code)
                     value = value.loc[value["datetime"].between(lower, upper)]
+                    record["normalized_prices_sha256"] = normalized_prices_sha256(value)
+                    record["normalized_prices_schema"] = "alphalab-ohlcv-v1"
                 record["status"] = "ok"
                 records.append(record)
                 return value, records, None

@@ -6,11 +6,12 @@ from typing import Literal
 
 from fastapi import FastAPI, Header, HTTPException
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr, field_validator
 
 from thesis.config import VERSION, load_config, public_json, utc_now
 from thesis.store import IdempotencyConflict, Store, WorkerUnavailable
+from thesis.evidence import evidence_snapshot, read_note
 
 
 FINAL_TEST = {"status": "not_run", "message": "最终独立测试尚未执行；当前归档仅用于验证集研究。"}
@@ -67,7 +68,9 @@ def create_app(root: Path | None = None) -> FastAPI:
 
     @app.get("/api/overview")
     def overview():
-        return response({"archive": archive(), "runs": store.list_runs(),
+        current = archive()
+        return response({"archive": current, "runs": store.list_runs(),
+                         "evidence": evidence_snapshot(config.root, current),
                          "environment": config.environment(worker_running=store.worker_running()),
                          "final_test": FINAL_TEST, "server_time": utc_now(), "version": VERSION})
 
@@ -75,6 +78,18 @@ def create_app(root: Path | None = None) -> FastAPI:
     def datasets():
         value = archive()
         return response([value["dataset"]] if value is not None else [])
+
+    @app.get("/api/evidence")
+    def evidence():
+        return response(evidence_snapshot(config.root, archive()))
+
+    @app.get("/api/evidence/notes/{note_id}")
+    def evidence_note(note_id: str):
+        value = read_note(config.root, note_id)
+        if value is None:
+            raise HTTPException(status_code=404, detail="研究笔记不存在或不可读")
+        return PlainTextResponse(public_json(value, config.secret_values),
+                                 headers={"X-Content-Type-Options": "nosniff"})
 
     @app.get("/api/factors")
     def factors():
@@ -112,7 +127,9 @@ def create_app(root: Path | None = None) -> FastAPI:
     @app.get("/api/reports/export")
     def export_report():
         environment = config.environment(worker_running=store.worker_running())
-        return response({"version": VERSION, "server_time": utc_now(), "archive": archive(),
+        current = archive()
+        return response({"version": VERSION, "server_time": utc_now(), "archive": current,
+                         "evidence": evidence_snapshot(config.root, current),
                          "runs": store.list_runs(), "config": {"version": VERSION, **environment},
                          "final_test": FINAL_TEST},
                         headers={"Content-Disposition": 'attachment; filename="alphalab-research-v1.2.0.json"'})

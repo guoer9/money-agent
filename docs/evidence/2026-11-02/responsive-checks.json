@@ -1,0 +1,26 @@
+[
+  {
+    "notes": 5,
+    "scrollWidth": 1024,
+    "view": "reports",
+    "width": 1024
+  },
+  {
+    "notes": 5,
+    "scrollWidth": 390,
+    "view": "reports",
+    "width": 390
+  },
+  {
+    "audit": true,
+    "scrollWidth": 390,
+    "view": "data",
+    "width": 390
+  },
+  {
+    "panelVisible": true,
+    "scrollWidth": 1920,
+    "view": "data",
+    "width": 1920
+  }
+]

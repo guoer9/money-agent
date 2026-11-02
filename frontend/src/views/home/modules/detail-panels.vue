@@ -3,6 +3,7 @@ import { computed, ref } from 'vue';
 import { useResearchStore } from '@/store/modules/research';
 import ResearchChart from './research-chart.vue';
 import ResearchIcon from './research-icon.vue';
+import EvidencePanel from './evidence-panel.vue';
 import { icOption, quantileOption } from './chart-options';
 defineProps<{ view: string }>();
 defineEmits<{ create: []; inspectRun: [id: string]; export: [] }>();
@@ -13,6 +14,10 @@ const selected = computed(() => store.selected);
 const num = (n: number | null | undefined) => n == null ? '—' : n.toFixed(4);
 const statuses: Record<string, string> = { queued: '排队中', running: '研究中', complete: '已完成', completed: '已完成', failed: '失败', interrupted: '已中断' };
 const qualityEntries = computed(() => Object.entries(store.archive?.dataset.quality || {}));
+const qualitySummary = computed(() => qualityEntries.value.filter(([key]) =>
+  ['input_rows', 'valid_rows', 'duplicates_removed', 'invalid_removed', 'missing_instrument_sessions', 'volume_unit'].includes(key)
+));
+const adjustmentTitle = computed(() => store.archive?.dataset.adjustment?.includes('qfq') ? '前复权快照 · qfq' : '复权口径见归档');
 const qualityNames: Record<string, string> = {
   input_rows:'原始记录数', valid_rows:'有效记录数', output_rows:'输出记录数', duplicates_removed:'移除重复记录',
   duplicate_rows_excluded:'排除重复键记录', conflicting_duplicate_rows:'冲突重复记录', invalid_removed:'移除无效记录',
@@ -35,20 +40,23 @@ const protocolNames: Record<string, string> = {
 function displayValue(value: unknown) {
   if (value === null) return '—';
   if (typeof value === 'boolean') return value ? '是' : '否';
+  if (value === 'lots (100 shares)') return '手（100 股 / 手）';
   return typeof value === 'object' ? JSON.stringify(value) : String(value);
 }
 </script>
 <template>
   <template v-if="view === 'data'">
     <section class="panel data-hero">
-      <div><span class="eyebrow">MARKET DATA ASSET</span><h2>让研究建立在可信的数据之上。</h2><p>原始行情、清洗质量与数据指纹，共同构成每一次实验的起点。</p><div class="tag-row"><span class="soft-badge">真实公开行情</span><span class="small-tag">{{ store.archive?.dataset.adjustment || '复权口径待确认' }}</span><span class="small-tag">日频 · A 股</span></div></div>
+      <div><span class="eyebrow">MARKET DATA ASSET</span><h2>让研究建立在可信的数据之上。</h2><p>原始行情、清洗质量与数据指纹，共同构成每一次实验的起点。</p><div class="tag-row"><span class="soft-badge">真实公开行情</span><span class="small-tag" :title="store.archive?.dataset.adjustment">{{ adjustmentTitle }}</span><span class="small-tag">日频 · A 股</span></div></div>
       <div class="data-count">{{ store.archive?.dataset.rows.toLocaleString() || '—' }}<span>条有效行情记录</span></div>
     </section>
+    <EvidencePanel mode="data" />
     <div class="two-column">
       <section class="panel">
         <div class="panel-head"><div><span class="eyebrow">PROVENANCE & QUALITY</span><h2>来源与质量</h2></div><ResearchIcon name="data" /></div>
         <dl class="definition-list"><div><dt>数据来源</dt><dd>{{ store.archive?.dataset.source || '未接入' }}</dd></div><div><dt>时间范围</dt><dd>{{ store.archive ? store.archive.dataset.start + ' → ' + store.archive.dataset.end : '—' }}</dd></div><div><dt>股票数量</dt><dd>{{ store.archive?.dataset.instruments ?? '—' }}</dd></div><div><dt>SHA-256 数据指纹</dt><dd class="hash">{{ store.archive?.dataset.sha256 || '—' }}</dd></div></dl>
-        <div class="quality-list"><div v-for="[key, value] in qualityEntries" :key="key"><span>{{ qualityNames[key] || key }}</span><b>{{ displayValue(value) }}</b></div></div>
+        <div class="quality-list"><div v-for="[key, value] in qualitySummary" :key="key"><span>{{ qualityNames[key] || key }}</span><b>{{ displayValue(value) }}</b></div></div>
+        <details class="quality-details"><summary>完整清洗记录 · {{ qualityEntries.length }} 项</summary><div class="quality-list"><div v-for="[key, value] in qualityEntries" :key="key"><span>{{ qualityNames[key] || key }}</span><b>{{ displayValue(value) }}</b></div></div></details>
       </section>
       <section class="panel">
         <div class="panel-head"><div><span class="eyebrow">TIME SEPARATION</span><h2>实验时间隔离</h2></div><ResearchIcon name="lock" /></div>
@@ -87,8 +95,9 @@ factor = calculate({{ JSON.stringify(selected.expression) }}, panel)</pre></div>
     </section>
   </template>
   <template v-else-if="view === 'reports'">
-    <section class="panel report-hero"><div><span class="eyebrow">REPRODUCIBLE RESEARCH</span><h2>从系统展示，到论文证据。</h2><p>保存真实数据与评价结果，保留来源、表达式、日期区间和协议。</p></div><button class="primary-button" :disabled="!store.archive" @click="$emit('export')"><ResearchIcon name="download" :size="17" />导出实验材料</button></section>
+    <section class="panel report-hero"><div><span class="eyebrow">REPRODUCIBLE RESEARCH</span><h2>从系统展示，到论文证据。</h2><p>保存真实数据与评价结果，保留来源、表达式、日期区间和协议。</p></div><button class="primary-button" :disabled="!store.overview" @click="$emit('export')"><ResearchIcon name="download" :size="17" />导出实验材料</button></section>
     <div class="evidence-grid"><section class="panel" v-for="item in [{ icon:'data',title:'数据证据',desc:'原始快照、清洗报告、数据指纹',state:store.archive ? '已归档' : '等待数据' },{icon:'factor',title:'经典评价',desc:'日 IC、Rank IC、ICIR、分层收益',state:store.factors.length ? '已归档' : '等待评价'},{icon:'feedback',title:'反馈实验',desc:'模型响应、父子结果、调用用量',state:'待真实调用'},{icon:'lock',title:'独立测试',desc:'冻结候选、单次测试、隔离验证',state:'待候选冻结'}]" :key="item.title"><div class="evidence-icon"><ResearchIcon :name="item.icon" :size="23" /></div><h3>{{ item.title }}</h3><p>{{ item.desc }}</p><span class="small-tag">{{ item.state }}</span></section></div>
-    <section class="panel"><div class="panel-head"><div><span class="eyebrow">EXPERIMENT PROTOCOL</span><h2>当前评价协议</h2></div><span class="soft-badge">{{ store.archive?.protocol.id || '待生成' }}</span></div><dl class="definition-list"><div v-for="(value, key) in store.archive?.protocol || {}" :key="key"><dt>{{ protocolNames[String(key)] || key }}</dt><dd>{{ displayValue(value) }}</dd></div></dl></section>
+    <EvidencePanel mode="corpus" />
+    <section class="panel" style="margin-top:20px"><div class="panel-head"><div><span class="eyebrow">EXPERIMENT PROTOCOL</span><h2>当前评价协议</h2></div><span class="soft-badge">{{ store.archive?.protocol.id || '待生成' }}</span></div><dl class="definition-list"><div v-for="(value, key) in store.archive?.protocol || {}" :key="key"><dt>{{ protocolNames[String(key)] || key }}</dt><dd>{{ displayValue(value) }}</dd></div></dl></section>
   </template>
 </template>

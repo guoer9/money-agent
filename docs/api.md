@@ -53,6 +53,14 @@ LLM 配置从 `thesis.config.load_config()` 读取，首选 `THESIS_*`，并兼�
 
 `archive` 读取 `runtime/artifacts/baselines.json`；文件不存在时为 `null`，文件损坏或不符合归档契约时返回 `503`。
 
+另返回 `evidence`，与下述审计端点结构相同。
+
+### `GET /api/evidence` 与 `GET /api/evidence/notes/{note_id}`
+
+只读核验 manifest、面板和原始响应 SHA-256，不计算因子或标签。`dataset.status=verified` 仅指文件完整；`archive_link.status=matched` 才表示当前检查的数据与展示评价属于同一 ID/哈希。缺文件、哈希不符、缺原指纹、路径无效和清单不可读分别记录；`pit_status` 仍为 `unverified`。
+
+`corpus` 枚举 `docs/research/YYYY-MM-DD/` 第 2 轮起的实质 Markdown 记录，返回标题、分类、路径、SHA 和字面临时引用的可访问数。笔记标为 `note_only`，文件存在不代表原件已核验。正文只允许读取索引范围内文件，以纯文本返回，不执行 Markdown、HTML 或命令；未知或越界 ID 返回 `404`。
+
 ### `GET /api/datasets` 与 `GET /api/factors`
 
 归档存在时分别返回 `archive.dataset` 的单元素列表和 `archive.factors`，无归档时返回空列表。
@@ -83,7 +91,7 @@ baseline 请求可以在 worker 在线时入队；实际执行由独立 worker �
 
 ### `GET /api/reports/export`
 
-导出真实归档、持久任务、公开环境配置、版本和最终测试状态，返回 `Content-Disposition: attachment`。不包含 API key、原始测试标签或其他原始敏感字段。无归档也返回严格 JSON，`archive` 为 `null`。
+导出真实归档、持久任务、公开环境配置、版本、最终测试状态和 `evidence` 审计快照，返回 `Content-Disposition: attachment`。不包含 API key、原始测试标签或其他原始敏感字段。无归档也返回严格 JSON，`archive` 为 `null`；可以单独导出已有资料索引。
 
 ## Worker 执行
 

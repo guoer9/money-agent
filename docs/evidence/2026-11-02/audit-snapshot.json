@@ -1,0 +1,290 @@
+{
+  "schema_version": "1.0",
+  "checked_at": "2026-11-02T05:07:00.001726Z",
+  "dataset": {
+    "status": "verified",
+    "pit_status": "unverified",
+    "panel": {
+      "status": "verified",
+      "expected_sha256": "1ce0f66b3541711961b8cc08abd94d24c434265c4eda94a1c979b99c87b82623",
+      "actual_sha256": "1ce0f66b3541711961b8cc08abd94d24c434265c4eda94a1c979b99c87b82623"
+    },
+    "raw": {
+      "total": 31,
+      "verified": 31,
+      "missing": 0,
+      "mismatch": 0,
+      "unreadable": 0,
+      "invalid_path": 0,
+      "unrecorded": 0
+    },
+    "normalized_fingerprints": 0,
+    "snapshot_time": "2026-11-01T14:39:10.779278+00:00",
+    "manifest_sha256": "ccb17b1ffe9d35d370e8613d5b1942329b8f46e45bbc58dadf01be49e03ed5e6",
+    "id": "tencent-qfq-20261101T143908-d1ef67035f"
+  },
+  "archive_link": {
+    "status": "matched",
+    "displayed_dataset_id": "tencent-qfq-20261101T143908-d1ef67035f",
+    "checked_dataset_id": "tencent-qfq-20261101T143908-d1ef67035f",
+    "displayed_sha256": "1ce0f66b3541711961b8cc08abd94d24c434265c4eda94a1c979b99c87b82623",
+    "checked_sha256": "1ce0f66b3541711961b8cc08abd94d24c434265c4eda94a1c979b99c87b82623"
+  },
+  "corpus": {
+    "note_count": 15,
+    "notes": [
+      {
+        "id": "2026-11-02--16-chinaclear-rights-guide-version-history",
+        "round": 16,
+        "date": "2026-11-02",
+        "title": "2026-11-02 第 16 轮：中国结算证券发行人业务指南历史版本与配股失败退款条款边界",
+        "category": "事件与制度",
+        "path": "docs/research/2026-11-02/16-chinaclear-rights-guide-version-history.md",
+        "sha256": "0dc1cce5456d786aa5dbc48f3dc7147fd76a8d8f82aa71b20344c717980339a1",
+        "evidence_level": "note_only",
+        "temporary_references": {
+          "referenced": 3,
+          "available": 0,
+          "missing": 3
+        }
+      },
+      {
+        "id": "2026-11-02--15-chinaclear-rights-rule-discovery",
+        "round": 15,
+        "date": "2026-11-02",
+        "title": "2026-11-02 第 15 轮：中国结算证券发行人业务指南与配股失败退款路径",
+        "category": "事件与制度",
+        "path": "docs/research/2026-11-02/15-chinaclear-rights-rule-discovery.md",
+        "sha256": "03c9b1e09670f99d418d7d29cb8841e0fd0436ec7962cbecb68e454a3dbf5784",
+        "evidence_level": "note_only",
+        "temporary_references": {
+          "referenced": 4,
+          "available": 0,
+          "missing": 4
+        }
+      },
+      {
+        "id": "2026-11-02--14-rights-refund-settlement-rules",
+        "round": 14,
+        "date": "2026-11-02",
+        "title": "2026-11-02 第 14 轮：配股失败退款与结算参与人路径的制度核验",
+        "category": "事件与制度",
+        "path": "docs/research/2026-11-02/14-rights-refund-settlement-rules.md",
+        "sha256": "c4a2961973e26ce052c13df03d8845493661c997926f3a19fa61da135a1e872a",
+        "evidence_level": "note_only",
+        "temporary_references": {
+          "referenced": 3,
+          "available": 0,
+          "missing": 3
+        }
+      },
+      {
+        "id": "2026-11-02--13-rights-issue-failure-aftercare-search",
+        "round": 13,
+        "date": "2026-11-02",
+        "title": "2026-11-02 第 13 轮：配股失败善后公告专项检索",
+        "category": "事件与制度",
+        "path": "docs/research/2026-11-02/13-rights-issue-failure-aftercare-search.md",
+        "sha256": "02110b172e6257fa02fa02f57851e4d82c5a4d66ea2d4cd14628734e8c4857a1",
+        "evidence_level": "note_only",
+        "temporary_references": {
+          "referenced": 0,
+          "available": 0,
+          "missing": 0
+        }
+      },
+      {
+        "id": "2026-11-02--12-rights-issue-result-corpus-coverage",
+        "round": 12,
+        "date": "2026-11-02",
+        "title": "2026-11-02 第 12 轮：配股发行结果公告覆盖与失败样本复核",
+        "category": "事件与制度",
+        "path": "docs/research/2026-11-02/12-rights-issue-result-corpus-coverage.md",
+        "sha256": "9b324e231c9f8e169005d369418297b40b335e0d21098e2228a729c1305f9a3d",
+        "evidence_level": "note_only",
+        "temporary_references": {
+          "referenced": 1,
+          "available": 0,
+          "missing": 1
+        }
+      },
+      {
+        "id": "2026-11-02--11-failed-rights-issue-event-status",
+        "round": 11,
+        "date": "2026-11-02",
+        "title": "2026-11-02 第 11 轮：配股发行失败事件的生命周期状态与证据边界",
+        "category": "事件与制度",
+        "path": "docs/research/2026-11-02/11-failed-rights-issue-event-status.md",
+        "sha256": "4c1676412b09774cdc94ed813e92c4d92cb70fb0b742add2e9fa434f8d2226f1",
+        "evidence_level": "note_only",
+        "temporary_references": {
+          "referenced": 13,
+          "available": 0,
+          "missing": 13
+        }
+      },
+      {
+        "id": "2026-11-02--10-share-consolidation-vs-bonus-transfer",
+        "round": 10,
+        "date": "2026-11-02",
+        "title": "2026-11-02 第 10 轮：缩股/股份合并与送转事件账本核验",
+        "category": "数据可信度",
+        "path": "docs/research/2026-11-02/10-share-consolidation-vs-bonus-transfer.md",
+        "sha256": "e4e05f6a715a1b3ada58a75f9d692f2a20ea285b72b91db52b635c55e6678606",
+        "evidence_level": "note_only",
+        "temporary_references": {
+          "referenced": 9,
+          "available": 0,
+          "missing": 9
+        }
+      },
+      {
+        "id": "2026-11-02--09-bonus-shares-vs-capital-reserve-transfer",
+        "round": 9,
+        "date": "2026-11-02",
+        "title": "2026-11-02 第 9 轮：送红股与资本公积转增的事件账本核验",
+        "category": "数据可信度",
+        "path": "docs/research/2026-11-02/09-bonus-shares-vs-capital-reserve-transfer.md",
+        "sha256": "5b797b6e11efe30dbb00f94ed7b2dbaadaeae268a8d86d819f2c34fbe86f4e98",
+        "evidence_level": "note_only",
+        "temporary_references": {
+          "referenced": 11,
+          "available": 0,
+          "missing": 11
+        }
+      },
+      {
+        "id": "2026-11-02--08-rights-issue-ex-right-validation",
+        "round": 8,
+        "date": "2026-11-02",
+        "title": "2026-11-02 第 8 轮：真实配股事件与除权边界复核",
+        "category": "事件与制度",
+        "path": "docs/research/2026-11-02/08-rights-issue-ex-right-validation.md",
+        "sha256": "c91a3197ea94729d68c7c596801a39bca3a69ab2a40a2850119858dac82d778f",
+        "evidence_level": "note_only",
+        "temporary_references": {
+          "referenced": 9,
+          "available": 0,
+          "missing": 9
+        }
+      },
+      {
+        "id": "2026-11-02--07-mixed-dividend-transfer-event-validation",
+        "round": 7,
+        "date": "2026-11-02",
+        "title": "2026-11-02 第 7 轮：现金分红与资本公积转增混合事件复核",
+        "category": "数据可信度",
+        "path": "docs/research/2026-11-02/07-mixed-dividend-transfer-event-validation.md",
+        "sha256": "ca44bdb8f6ef1a6aca1a2ccafaf5cac1d077c4e6d1433e3b189525f89102959c",
+        "evidence_level": "note_only",
+        "temporary_references": {
+          "referenced": 10,
+          "available": 0,
+          "missing": 10
+        }
+      },
+      {
+        "id": "2026-11-02--06-transfer-event-qfq-step-validation",
+        "round": 6,
+        "date": "2026-11-02",
+        "title": "2026-11-02 第 6 轮：资本公积转增事件与 qfq 台阶复核",
+        "category": "数据可信度",
+        "path": "docs/research/2026-11-02/06-transfer-event-qfq-step-validation.md",
+        "sha256": "2c8c3413ab214e53c37e5794fbc91d87578b1d9579d5e084a169a7f15dcbbf42",
+        "evidence_level": "note_only",
+        "temporary_references": {
+          "referenced": 8,
+          "available": 0,
+          "missing": 8
+        }
+      },
+      {
+        "id": "2026-11-02--05-second-dividend-qfq-step-validation",
+        "round": 5,
+        "date": "2026-11-02",
+        "title": "2026-11-02 第 5 轮：第二个真实权益分派事件与 qfq 台阶复验",
+        "category": "数据可信度",
+        "path": "docs/research/2026-11-02/05-second-dividend-qfq-step-validation.md",
+        "sha256": "a5964d16c91a745e07ae5ba3603ffed9fce3395be7de00251cf509c524b0be28",
+        "evidence_level": "note_only",
+        "temporary_references": {
+          "referenced": 4,
+          "available": 0,
+          "missing": 4
+        }
+      },
+      {
+        "id": "2026-11-02--04-tencent-qfq-corporate-action-fields",
+        "round": 4,
+        "date": "2026-11-02",
+        "title": "2026-11-02 第 4 轮：腾讯 qfq 回写行为与 A 股公司行动事件字段",
+        "category": "数据可信度",
+        "path": "docs/research/2026-11-02/04-tencent-qfq-corporate-action-fields.md",
+        "sha256": "298a4617a0c3279a6de4ca20f23ce0402045847b8a9bc9a40d89cdb1f8d739f4",
+        "evidence_level": "note_only",
+        "temporary_references": {
+          "referenced": 4,
+          "available": 0,
+          "missing": 4
+        }
+      },
+      {
+        "id": "2026-11-02--03-point-in-time-corporate-actions-survivorship",
+        "round": 3,
+        "date": "2026-11-02",
+        "title": "2026-11-02 第 3 轮：Point-in-Time 数据、公司行动与生存者偏差",
+        "category": "数据可信度",
+        "path": "docs/research/2026-11-02/03-point-in-time-corporate-actions-survivorship.md",
+        "sha256": "47f234945c75bf7ca7fe660aa85799fd7754550dc1fc9e4090ce9fba61788208",
+        "evidence_level": "note_only",
+        "temporary_references": {
+          "referenced": 0,
+          "available": 0,
+          "missing": 0
+        }
+      },
+      {
+        "id": "2026-11-02--02-llm-factor-leakage-source-baseline",
+        "round": 2,
+        "date": "2026-11-02",
+        "title": "2026-11-02 第 2 轮：LLM 量化因子系统的可靠性与防泄漏来源基线",
+        "category": "生成与评价",
+        "path": "docs/research/2026-11-02/02-llm-factor-leakage-source-baseline.md",
+        "sha256": "c076a98e52e6d0da603569a43c50b5ec549412b438f68a97468c4101b5a28129",
+        "evidence_level": "note_only",
+        "temporary_references": {
+          "referenced": 0,
+          "available": 0,
+          "missing": 0
+        }
+      }
+    ],
+    "temporary_files": {
+      "referenced": 76,
+      "available": 0,
+      "missing": 76
+    }
+  },
+  "boundaries": [
+    {
+      "title": "前复权快照",
+      "status": "未完成 PIT 验证",
+      "detail": "文件指纹一致只证明本地归档完整；供应方的逐事件因子和历史回写政策尚未核验。"
+    },
+    {
+      "title": "固定股票池",
+      "status": "存在选择偏差",
+      "detail": "当前行情采用固定研究池，尚无历史时点成分、上市与退市覆盖证明。"
+    },
+    {
+      "title": "文献与实现",
+      "status": "分开记录",
+      "detail": "研究笔记、制度条款和样本观察分别保留；资料数量不代表代码能力或实验已通过。"
+    },
+    {
+      "title": "最终测试",
+      "status": "预留未执行",
+      "detail": "当前仅有经典因子验证集评价；尚未冻结候选，也未执行真实 LLM 反馈和独立测试。"
+    }
+  ]
+}
