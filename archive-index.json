@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "code_commit": "385d47c185c9a0a5137f23ec3c6463b11105e5b7",
+  "checkpoint_tag": "alphalab-v1.2.0-data-checkpoint-20261102.1",
+  "data_branch": "data/alphalab-20261102",
+  "chunk_max_bytes": 33554432,
+  "archives": [
+    {
+      "file": "AlphaLab-checkpoint-20261102-code.bundle",
+      "bytes": 2123107,
+      "sha256": "43f097912a84f03da1efccb599f1146ac98751d1bca635bc3eeca3e13cfecb16",
+      "parts": [
+        {
+          "path": "archives/AlphaLab-checkpoint-20261102-code.bundle/part-0000",
+          "bytes": 2123107,
+          "sha256": "43f097912a84f03da1efccb599f1146ac98751d1bca635bc3eeca3e13cfecb16"
+        }
+      ]
+    },
+    {
+      "file": "AlphaLab-checkpoint-20261102-research.tar.gz",
+      "bytes": 142352,
+      "sha256": "da57661b8f6a2b11136b7dd0a428614d7aabf42b19abd45f8240ced153957872",
+      "parts": [
+        {
+          "path": "archives/AlphaLab-checkpoint-20261102-research.tar.gz/part-0000",
+          "bytes": 142352,
+          "sha256": "da57661b8f6a2b11136b7dd0a428614d7aabf42b19abd45f8240ced153957872"
+        }
+      ]
+    },
+    {
+      "file": "AlphaLab-checkpoint-20261102-runtime.tar.gz",
+      "bytes": 535123972,
+      "sha256": "8a436fea34d6d45ad8747059052ea7fa3be5752e4bb9e7e924b2bfb6f5e6ad67",
+      "parts": [
+        {
+          "path": "archives/AlphaLab-checkpoint-20261102-runtime.tar.gz/part-0000",
+          "bytes": 33554432,
+          "sha256": "59ae98b7cf8581b973449f8228c46aa8590e48b537b60f2922ea940b866c85c7"
+        },
+        {
+          "path": "archives/AlphaLab-checkpoint-20261102-runtime.tar.gz/part-0001",
+          "bytes": 33554432,
+          "sha256": "e18c6b7ce9992a033db0815593a3a8762d82cf1558d194fe8c89029f86d29f0b"
+        },
+        {
+          "path": "archives/AlphaLab-checkpoint-20261102-runtime.tar.gz/part-0002",
+          "bytes": 33554432,
+          "sha256": "2479007ddbc1ddea95c6b45035dca3427f66f30a440c5603038da65bacffba2e"
+        },
+        {
+          "path": "archives/AlphaLab-checkpoint-20261102-runtime.tar.gz/part-0003",
+          "bytes": 33554432,
+          "sha256": "3c69959e5be255dea935fae171bbe0321e3a83b5533b44716d58cb583e14c004"
+        },
+        {
+          "path": "archives/AlphaLab-checkpoint-20261102-runtime.tar.gz/part-0004",
+          "bytes": 33554432,
+          "sha256": "71c1d92d8f7eea7abae7057336755ee8c48b1d932bc3c0056346d928936b792c"
+        },
+        {
+          "path": "archives/AlphaLab-checkpoint-20261102-runtime.tar.gz/part-0005",
+          "bytes": 33554432,
+          "sha256": "8e32c7b98dc4ec0a8619d9a5208270992a3a26d2b5876f31445cdc3ffbed009a"
+        },
+        {
+          "path": "archives/AlphaLab-checkpoint-20261102-runtime.tar.gz/part-0006",
+          "bytes": 33554432,
+          "sha256": "ec99718f5b2cdec21623a6dc0da6dd88b911d7a6a37298c628c992e37711d2ac"
+        },
+        {
+          "path": "archives/AlphaLab-checkpoint-20261102-runtime.tar.gz/part-0007",
+          "bytes": 33554432,
+          "sha256": "1823944c24a324b68c0c0dc9571f87f9f648a3ab72dc4a20a7e4fc730788d89c"
+        },
+        {
+          "path": "archives/AlphaLab-checkpoint-20261102-runtime.tar.gz/part-0008",
+          "bytes": 33554432,
+          "sha256": "ca177dd872f29e8e7f287606840cf736a1c4719e256bb96cc19d2b0013fd7418"
+        },
+        {
+          "path": "archives/AlphaLab-checkpoint-20261102-runtime.tar.gz/part-0009",
+          "bytes": 33554432,
+          "sha256": "3e535b21fa928dcb359c693cbe0f16cd6a01173c4c544b1502727e2315bde841"
+        },
+        {
+          "path": "archives/AlphaLab-checkpoint-20261102-runtime.tar.gz/part-0010",
+          "bytes": 33554432,
+          "sha256": "1fe8990d998bda52627fabf0376ad822d545054f49151fd116351a0c7f4e71f9"
+        },
+        {
+          "path": "archives/AlphaLab-checkpoint-20261102-runtime.tar.gz/part-0011",
+          "bytes": 33554432,
+          "sha256": "e197804f0de7debc42033925f7d8b406905926f85c37376e85e27128ee7d26d0"
+        },
+        {
+          "path": "archives/AlphaLab-checkpoint-20261102-runtime.tar.gz/part-0012",
+          "bytes": 33554432,
+          "sha256": "d0567ad526e4ca4828ab3a78acd0838905366d185cdbb39e4823d8f72b453431"
+        },
+        {
+          "path": "archives/AlphaLab-checkpoint-20261102-runtime.tar.gz/part-0013",
+          "bytes": 33554432,
+          "sha256": "88330d05e3fc227e226bf9c3c01aafd99113e00c0d8e044bb0b0e5ef2492c58c"
+        },
+        {
+          "path": "archives/AlphaLab-checkpoint-20261102-runtime.tar.gz/part-0014",
+          "bytes": 33554432,
+          "sha256": "1768094a2c1fb080378295c5b5d22154f8386c6c8d64413b7a2861654942187a"
+        },
+        {
+          "path": "archives/AlphaLab-checkpoint-20261102-runtime.tar.gz/part-0015",
+          "bytes": 31807492,
+          "sha256": "7b9d6f513dee655b249f582938558bf3dcf7ea06a6e7ef5ed1445535c3b4fd4d"
+        }
+      ]
+    },
+    {
+      "file": "AlphaLab-checkpoint-20261102-source.tar.gz",
+      "bytes": 2371946,
+      "sha256": "2d2d5fb3c034338cf10642c1d2d6e3a51d4d0cdefd8ab82e16bbdcb61cea138f",
+      "parts": [
+        {
+          "path": "archives/AlphaLab-checkpoint-20261102-source.tar.gz/part-0000",
+          "bytes": 2371946,
+          "sha256": "2d2d5fb3c034338cf10642c1d2d6e3a51d4d0cdefd8ab82e16bbdcb61cea138f"
+        }
+      ]
+    }
+  ],
+  "metadata": [
+    {
+      "file": "checkpoint-manifest.json",
+      "bytes": 3512,
+      "sha256": "2f04b99735e2c272b77793cf50ce4a9f909f0160561f6012ac62e79247ae8692"
+    },
+    {
+      "file": "SHA256SUMS.txt",
+      "bytes": 528,
+      "sha256": "d7e2b1ef2c1c9cee0837096a9b0a247b9b8fd450cf451622f694f8e8bff5cfc2"
+    }
+  ]
+}

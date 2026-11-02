@@ -1,0 +1,104 @@
+{
+  "checkpoint_tag": "alphalab-v1.2.0-data-checkpoint-20261102.1",
+  "remote_branch": "backup/alphalab-20261102",
+  "repository": "guoer9/money-agent",
+  "created_at": "2026-11-02T14:36:33.237425+00:00",
+  "assets": {
+    "runtime": {
+      "file": "AlphaLab-checkpoint-20261102-runtime.tar.gz",
+      "bytes": 535123972,
+      "sha256": "8a436fea34d6d45ad8747059052ea7fa3be5752e4bb9e7e924b2bfb6f5e6ad67",
+      "file_count": 17178,
+      "uncompressed_bytes": 720561637,
+      "manifest": "FILE-MANIFEST-runtime.json"
+    },
+    "research": {
+      "file": "AlphaLab-checkpoint-20261102-research.tar.gz",
+      "bytes": 142352,
+      "sha256": "da57661b8f6a2b11136b7dd0a428614d7aabf42b19abd45f8240ced153957872",
+      "file_count": 36,
+      "uncompressed_bytes": 913885,
+      "manifest": "FILE-MANIFEST-research.json"
+    },
+    "source": {
+      "file": "AlphaLab-checkpoint-20261102-source.tar.gz",
+      "bytes": 2371946,
+      "sha256": "2d2d5fb3c034338cf10642c1d2d6e3a51d4d0cdefd8ab82e16bbdcb61cea138f"
+    },
+    "git_bundle": {
+      "file": "AlphaLab-checkpoint-20261102-code.bundle",
+      "bytes": 2123107,
+      "sha256": "43f097912a84f03da1efccb599f1146ac98751d1bca635bc3eeca3e13cfecb16"
+    }
+  },
+  "sqlite_table_counts": {
+    "runs": 1,
+    "events": 4,
+    "heartbeats": 5
+  },
+  "secret_pattern_findings": [],
+  "excluded": [
+    "venvs and node_modules",
+    "credentials and root dotenv",
+    "locks and SQLite sidecars",
+    "reproducible third-party Git clones",
+    "paper PDFs and thesis personal documents",
+    "temporary external references outside the workspace"
+  ],
+  "research_ready": false,
+  "final_test_evaluated": false,
+  "restore_drill": {
+    "restored_to": "releases/checkpoint-20261102/restore-drill",
+    "file_counts_verified": {
+      "runtime": 17178,
+      "research": 36
+    },
+    "sqlite_integrity": "ok",
+    "sqlite_counts": {
+      "runs": 1,
+      "events": 4,
+      "heartbeats": 5
+    },
+    "production_panel_sha256_verified": true,
+    "full_market_report_verified": true,
+    "restored_app_smoke": {
+      "overview": 200,
+      "evidence": 200,
+      "html": 200,
+      "frontend_asset": 200,
+      "dataset_identity": "matched",
+      "final_test": "not_run",
+      "imports_from_restored_source": true
+    }
+  },
+  "verification": {
+    "backend": "101 passed, 1 existing deprecation warning; local networking enabled for the loopback deadline test",
+    "frontend_typecheck": "passed with Node 22.20.0",
+    "frontend_build": "passed with Node 22.20.0",
+    "git_diff_check": "passed"
+  },
+  "dataset": {
+    "id": "tencent-qfq-20261101T143908-d1ef67035f",
+    "instruments": 30,
+    "rows": 19190,
+    "panel_sha256": "1ce0f66b3541711961b8cc08abd94d24c434265c4eda94a1c979b99c87b82623"
+  },
+  "full_market_probe": {
+    "instruments": 5576,
+    "window_rows": 11393279,
+    "research_ready": false,
+    "final_test_evaluated": false
+  },
+  "initial_code_tag": "alphalab-v1.2.0-data-checkpoint-20261102",
+  "data_branch": "data/alphalab-20261102",
+  "distribution": "Dedicated SSH-pushed data branch, 32 MiB chunks with whole-archive and per-chunk SHA-256",
+  "code_commit": "385d47c185c9a0a5137f23ec3c6463b11105e5b7",
+  "code_tag_object": "3aba3fb3450f371b7568cce0f4e1fea947ef1638",
+  "publication": {
+    "repository": "guoer9/money-agent",
+    "code_branch": "backup/alphalab-20261102",
+    "data_branch": "data/alphalab-20261102",
+    "method": "SSH Git, archive chunks no larger than 32 MiB",
+    "github_release_assets_uploaded": false
+  }
+}
